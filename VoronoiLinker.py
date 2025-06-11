@@ -1,11 +1,11 @@
 # !!! Disclaimer: Use the contents of this file at your own risk !!!
 # 100% of the content of this file contains malicious code!!
 
-bl_info = {'name':"Voronoi Linker", 'author':"ugorek", #Так же спасибо "Oxicid" за важную для VL'а помощь.
-           'version':(5,0,2), 'blender':(4,0,2), 'created':"2024.03.06", #Ключ 'created' для внутренних нужд.
-           'info_supported_blvers': "b4.0.2 – b4.0.2", #Тоже внутреннее.
-           'description':"Various utilities for nodes connecting, based on distance field.", 'location':"Node Editor", #Раньше была надпись 'Node Editor > Alt + RMB' в честь того, ради чего всё; но теперь VL "повсюду"!
-           'warning':"", #Надеюсь не настанет тот момент, когда у VL будет предупреждение. Неработоспособность в Linux'е была очень близко к этому.
+bl_info = {'name':"Voronoi Linker", 'author':"ugorek",
+           'version':(5,0,2), 'blender':(4,0,2), 'created':"2024.03.06",
+           'info_supported_blvers': "b4.0.2 – b4.0.2",
+           'description':"Various utilities for nodes connecting, based on distance field.", 'location':"Node Editor",
+           'warning':"", 
            'category':"Node",
            'wiki_url':"https://github.com/ugorek000/VoronoiLinker/wiki", 'tracker_url':"https://github.com/ugorek000/VoronoiLinker/issues"}
 
@@ -194,85 +194,14 @@ def UnregisterTranslations():
         li.unregister()
 
 
-with VlTrMapForKey(bl_info['description']) as dm:
-    dm[ru_RU] = "Разнообразные помогалочки для соединения нодов, основанные на поле расстояний."
-    dm[zh_CN] = "基于距离场的多种节点连接辅助工具。"
-
 txtAddonVer = ".".join([str(v) for v in bl_info['version']])
 txt_addonVerDateCreated = f"Version {txtAddonVer} created {bl_info['created']}"
-with VlTrMapForKey(txt_addonVerDateCreated) as dm:
-    dm[ru_RU] = f"Версия {txtAddonVer} создана {bl_info['created']}"
-#    dm[zh_CN] = f" {txtAddonVer}  {bl_info['created']}"
-txt_addonBlVerSupporting = f"For Blender versions: {bl_info['info_supported_blvers']}"
-with VlTrMapForKey(txt_addonBlVerSupporting) as dm:
-    dm[ru_RU] = f"Для версий Блендера: {bl_info['info_supported_blvers']}"
-#    dm[zh_CN] = f" {bl_info['info_supported_blvers']}"
-
-txt_onlyFontFormat = "Only .ttf or .otf format"
-with VlTrMapForKey(txt_onlyFontFormat) as dm:
-    dm[ru_RU] = "Только .ttf или .otf формат"
-    dm[zh_CN] = "只支持.ttf或.otf格式"
 
 txt_copySettAsPyScript = "Copy addon settings as .py script"
-with VlTrMapForKey(txt_copySettAsPyScript, tc='Op') as dm:
-    dm[ru_RU] = "Скопировать настройки аддона как '.py' скрипт"
-    dm[zh_CN] = "将插件设置复制为'.py'脚本,复制到粘贴板里"
-
-txt_сheckForUpdatesYourself = "Check for updates yourself"
-with VlTrMapForKey(txt_сheckForUpdatesYourself, tc='Op') as dm:
-    dm[ru_RU] = "Проверяйте обновления самостоятельно"
-#    dm[zh_CN] = ""
-
-txt_vmtNoMixingOptions = "No mixing options"
-with VlTrMapForKey(txt_vmtNoMixingOptions) as dm:
-    dm[ru_RU] = "Варианты смешивания отсутствуют"
-    dm[zh_CN] = "无混合选项"
-
-txt_vqmtThereIsNothing = "There is nothing"
-with VlTrMapForKey(txt_vqmtThereIsNothing) as dm:
-    dm[ru_RU] = "Ничего нет"
-
 txt_FloatQuickMath = "Float Quick Math"
-with VlTrMapForKey(txt_FloatQuickMath) as dm:
-    dm[zh_CN] = "快速浮点运算"
-
 txt_VectorQuickMath = "Vector Quick Math"
-with VlTrMapForKey(txt_VectorQuickMath) as dm:
-    dm[zh_CN] = "快速矢量运算"
-
 txt_BooleanQuickMath = "Boolean Quick Math"
-with VlTrMapForKey(txt_BooleanQuickMath) as dm:
-    dm[zh_CN] = "快速布尔运算"
-
 txt_ColorQuickMode = "Color Quick Mode"
-with VlTrMapForKey(txt_ColorQuickMode) as dm:
-    dm[zh_CN] = "快速颜色运算"
-
-#Заметка для переводчиков: слова ниже в вашем языке уже могут быть переведены.
-#Заметка: Оставить их для поддержки версий без них.
-with VlTrMapForKey("Virtual") as dm:
-    dm[ru_RU] = "Виртуальный"
-    dm[zh_CN] = "虚拟"
-with VlTrMapForKey("Restore", tc='Op') as dm:
-    dm[ru_RU] = "Восстановить"
-    dm[zh_CN] = "恢复"
-with VlTrMapForKey("Add New", tc='Op') as dm:
-    dm[ru_RU] = "Добавить" #Без слова "новый"; оно не влезает, слишком тесно.
-    dm[zh_CN] = "添加"
-with VlTrMapForKey("Mode") as dm:
-    dm[ru_RU] = "Режим"
-    dm[zh_CN] = "模式"
-with VlTrMapForKey("Colored") as dm:
-    dm[ru_RU] = "Цветной"
-    dm[zh_CN] = "根据端点类型自动设置颜色:"
-with VlTrMapForKey("Edge pan") as dm:
-    dm[ru_RU] = "Краевое панорамирование"
-with VlTrMapForKey("Pie") as dm:
-    dm[ru_RU] = "Пирог"
-with VlTrMapForKey("Special") as dm:
-    dm[ru_RU] = "Специальное"
-with VlTrMapForKey("Customization") as dm:
-    dm[ru_RU] = "Кастомизация"
 
 prefsTran = None
 
@@ -317,16 +246,12 @@ def CollectTranslationDict(): #Для удобства переводов, ко�
     ##
     with VlTrMapForKey(GetAnnotFromCls(VoronoiToolRoot,'isPassThrough').name) as dm:
         dm[ru_RU] = "Пропускать через выделение нода"
-        dm[zh_CN] = "单击输出端口预览(而不是自动根据鼠标位置自动预览)"
     with VlTrMapForKey(GetAnnotFromCls(VoronoiToolRoot,'isPassThrough').description) as dm:
         dm[ru_RU] = "Клик над нодом активирует выделение, а не инструмент"
-        dm[zh_CN] = "单击输出端口才连接预览而不是根据鼠标位置动态预览"
     with VlTrMapForKey(GetAnnotFromCls(VoronoiToolPairSk,'isCanBetweenFields').name) as dm:
         dm[ru_RU] = "Может между полями"
-        dm[zh_CN] = "端口类型可以不一样"
     with VlTrMapForKey(GetAnnotFromCls(VoronoiToolPairSk,'isCanBetweenFields').description) as dm:
         dm[ru_RU] = "Инструмент может искать сокеты между различными типами полей"
-#        dm[zh_CN] = "工具可以连接不同类型的端口"?
     ##
     dict_vlHhTranslations['zh_HANS'] = dict_vlHhTranslations['zh_CN']
     for cls in dict_vtClasses:
@@ -1953,12 +1878,6 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vltPriorityIgnoring:     bpy.props.BoolProperty(name="Priority ignoring",                     default=False, description=fitVltPiDescr)
     vltSelectingInvolved:    bpy.props.BoolProperty(name="Selecting involved nodes",              default=False)
 
-with VlTrMapForKey(VoronoiLinkerTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速连接"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiLinkerTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiLinkerTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiLinkerTool.bl_label}快速连接设置:"
-
 dict_toolLangSpecifDataPool[VoronoiLinkerTool, ru_RU] = "Священный инструмент. Ради этого был создан весь аддон.\nМинута молчания в честь NodeWrangler'a-прародителя-первоисточника."
 
 #Заметка: У DoLinkHh теперь слишком много других зависимостей, просто так его выдернуть уже будет сложнее.
@@ -2242,12 +2161,6 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vptOnionColorOut: bpy.props.FloatVectorProperty(name="Onion color exit",     default=(0.188, 0.188, 0.5),   min=0, max=1, size=3, subtype='COLOR')
     vptHlTextScale:   bpy.props.FloatProperty(name="Text scale", default=1.0, min=0.5, max=5.0)
 
-with VlTrMapForKey(VoronoiPreviewTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速预览"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiPreviewTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiPreviewTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiPreviewTool.bl_label}快速预览设置:"
-
 dict_toolLangSpecifDataPool[VoronoiPreviewTool, ru_RU] = "Канонический инструмент для мгновенного перенаправления явного вывода дерева.\nЕщё более полезен при использовании совместно с VPAT."
 
 class VptData:
@@ -2325,9 +2238,6 @@ SmartAddToRegAndAddToKmiDefs(VoronoiPreviewAnchorTool, "SC#_1", {'anchorType':1}
 SmartAddToRegAndAddToKmiDefs(VoronoiPreviewAnchorTool, "SC#_2", {'anchorType':2})
 SmartAddToRegAndAddToKmiDefs(VoronoiPreviewAnchorTool, "SC#_ACCENT_GRAVE", {'isDeleteNonCanonAnchors':2})
 dict_setKmiCats['oth'].add(VoronoiPreviewAnchorTool.bl_idname) #spc?
-
-with VlTrMapForKey(VoronoiPreviewAnchorTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi新建预览转接点"
 
 dict_toolLangSpecifDataPool[VoronoiPreviewAnchorTool, ru_RU] = "Вынужденное отделение от VPT, своеобразный \"менеджер-компаньон\" для VPT.\nЯвное указание сокета и создание рероут-якорей."
 
@@ -2731,12 +2641,6 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vmtPieSocketDisplayType:  bpy.props.IntProperty(  name="Display socket type info", default=1,   min=-1,  max=1, description="0 – Disable.\n1 – From above.\n-1 – From below (VMT)")
     vmtPieDisplaySocketColor: bpy.props.IntProperty(  name="Display socket color",     default=-1,  min=-4,  max=4, description="The sign is side of a color. The magnitude is width of a color")
 
-with VlTrMapForKey(VoronoiMixerTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速混合"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiMixerTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiMixerTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiMixerTool.bl_label}快速混合设置:"
-
 dict_toolLangSpecifDataPool[VoronoiMixerTool, ru_RU] = "Канонический инструмент для частых нужд смешивания.\nСкорее всего 70% уйдёт на использование \"Instance on Points\"."
 
 vmtSep = 'MixerItemsSeparator123'
@@ -2797,12 +2701,6 @@ dict_vmtMixerNodesDefs = { #'-1' означают визуальную здес�
         'GeometryNodeCurveToMesh':        (0, 1, "Curve to Mesh "),
         'GeometryNodeMeshBoolean':        (0, 1, "Boolean "),
         'GeometryNodeGeometryToInstance': (0, 0, "To Instance ")}
-with VlTrMapForKey("Switch  ") as dm:
-    dm[ru_RU] = "Переключение"
-with VlTrMapForKey("Mix  ") as dm:
-    dm[ru_RU] = "Смешивание"
-with VlTrMapForKey("Compare  ") as dm:
-    dm[ru_RU] = "Сравнение"
 
 def DoMix(tree, isShift, isAlt, type):
     bpy.ops.node.add_node('INVOKE_DEFAULT', type=type, use_transform=not VmtData.isPlaceImmediately)
@@ -3158,30 +3056,24 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vqmtPieSocketDisplayType:  bpy.props.IntProperty(  name="Display socket type info", default=1,    min=-1,  max=1, description="0 – Disable.\n1 – From above.\n-1 – From below (VMT)")
     vqmtPieDisplaySocketColor: bpy.props.IntProperty(  name="Display socket color",     default=-1,   min=-4,  max=4, description="The sign is side of a color. The magnitude is width of a color")
 
-with VlTrMapForKey(VoronoiQuickMathTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速数学运算"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiQuickMathTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiQuickMathTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiQuickMathTool.bl_label}快速数学运算设置:"
-
 dict_toolLangSpecifDataPool[VoronoiQuickMathTool, ru_RU] = """Полноценное ответвление от VMT. Быстрая и быстрая быстрая математика на спидах.
 Имеет дополнительный мини-функционал. Также см. \"Quick quick math\" в раскладе."""
 
-#Быстрая математика.
-#Заполучить нод с нужной операцией и автоматическим соединением в сокеты, благодаря мощностям VL'а.
-#Неожиданно для меня оказалось, что пирог может рисовать обычный layout. От чего добавил дополнительный тип пирога "для контроля".
-#А также сам буду пользоваться им, потому что за то время, которое экономится при двойном пироге, отдохнуть как-то всё равно не получается.
+#Fast mathematics.
+#Get a GCD with the desired operation and automatic connection to the sockets, thanks to the power of VL'A.
+#Unexpectedly for me it turned out that the pie could draw a regular layout. From which I added an additional type of pie "for control".
+#And I myself will use it myself, because during the time that is saved with a double pie, somehow it still cannot be relaxed.
 
-#Важная эстетическая ценность двойного пирога -- визуальная неперегруженность вариантами. Вместо того, чтобы вываливать всё сразу, показываются только по 8 штук за раз.
+#The important aesthetic value of a double pie is visual non -reloading options. Instead of dumping everything at once, they show only 8 pieces at a time.
 
-#todo00 с приходом популярности, посмотреть кто использует быстрый пирог, а потом аннигилировать его за ненадобностью; настолько распинаться о нём было бессмысленно. Мб опрос(голосование) сделать на BA.
-#Заметка для меня: сохранять поддержку двойного пирога чёрт возьми, ибо эстетика. Но выпилить его с каждым разом хочется всё больше D:
+#Todo00 with the advent of popularity, see who uses a quick pie, and then annihize it as unnecessary; It was pointless to crucify about him. MB Poll (Voting) do on BA.
+#Notice for me: keep the support of a double pie to the hell, for aesthetics. But I want to cut it every time more than D:
 
-#Было бы бездумно разбросать их как попало, поэтому я пытался соблюсти некоторую логическую последовательность. Например, расставляя пары по смыслу диаметрально противоположными.
-#Пирог Блендера располагает в себе элементы следующим образом: лево, право, низ, верх, после чего классическое построчное заполнение.
-#"Compatible..." -- чтобы у векторов и у математики одинаковые операции были на одинаковых местах (кроме тригонометрических).
-#За исключением примитивов, где прослеживается супер очевидная логика (право -- плюс -- add, лево -- минус -- sub; всё как на числовой оси), лево и низ у меня более простые, чем обратная сторона.
-#Например, length проще, чем distance. Всем же остальным не очевидным и не осе-ориентированным досталось как получится.
+#It would be thoughtless to scatter them as it hit, so I tried to observe some logical sequence. For example, arranging pairs in meaning diametrically opposite.
+#The blender pie has elements as follows: left, right, bottom, top, after which the classic constructive filling.
+#"Compatible ..." - so that the vectors and mathematics have the same operations in the same places (except trigonometric).
+#With the exception of primitives, where super obvious logic is traced (right - plus - add, left - minus - sub; everything is on the numerical axis), left and bottom are simpler than the back side.
+#For example, Length is easier than Distance. All the rest are not obvious and not oriented as it turned out.
 
 tup_vqmtQuickMathMapValue = (
         ("Advanced ",              ('SQRT',       'POWER',        'EXPONENT',   'LOGARITHM',   'INVERSE_SQRT','PINGPONG',    'FLOORED_MODULO' )),
@@ -3684,12 +3576,6 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vrtIsLiveRanto:  bpy.props.BoolProperty(name="Live Ranto", default=True)
     vrtIsFixIslands: bpy.props.BoolProperty(name="Fix islands", default=True)
 
-with VlTrMapForKey(VoronoiRantoTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi节点自动排布对齐"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiRantoTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiRantoTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiRantoTool.bl_label}节点自动排布对齐工具设置:"
-
 dict_toolLangSpecifDataPool[VoronoiRantoTool, ru_RU] = "Сейчас этот инструмент не более чем пустышка.\nСтанет доступным, когда VL стяжет свои заслуженные(?) лавры популярности."
 
 #Теперь RANTO интегрирован в VL. Неожиданно даже для меня.
@@ -3813,9 +3699,6 @@ SmartAddToRegAndAddToKmiDefs(VoronoiSwapperTool, "##A_S", {'toolMode':'ADD'})
 SmartAddToRegAndAddToKmiDefs(VoronoiSwapperTool, "#CA_S", {'toolMode':'TRAN'})
 dict_setKmiCats['oth'].add(VoronoiSwapperTool.bl_idname)
 
-with VlTrMapForKey(VoronoiSwapperTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速替换端口"
-
 dict_toolLangSpecifDataPool[VoronoiSwapperTool, ru_RU] = """Инструмент для обмена линков у двух сокетов, или добавления их к одному из них.
 Для линка обмена не будет, если в итоге он окажется исходящим из своего же нода."""
 dict_toolLangSpecifDataPool[VoronoiSwapperTool, zh_CN] = "Alt是批量替换输出端口,Shift是互换端口"
@@ -3909,14 +3792,7 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vhtIsUnhideVirtual:      bpy.props.BoolProperty(name="Unhide virtual sockets",           default=False)
     vhtIsToggleNodesOnDrag:  bpy.props.BoolProperty(name="Toggle nodes on drag",             default=True)
 
-with VlTrMapForKey(VoronoiHiderTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速隐藏"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiHiderTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiHiderTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiHiderTool.bl_label}快速隐藏端口设置:"
-
 dict_toolLangSpecifDataPool[VoronoiHiderTool, ru_RU] = "Инструмент для наведения порядка и эстетики в дереве.\nСкорее всего 90% уйдёт на использование автоматического сокрытия нодов."
-dict_toolLangSpecifDataPool[VoronoiHiderTool, zh_CN] = "Shift是自动隐藏数值为0/颜色纯黑/未连接的端口,Ctrl是单个隐藏端口"
 
 def HideFromNode(prefs, ndTarget, lastResult, isCanDo=False): #Изначально лично моя утилита, была создана ещё до VL.
     set_equestrianHideVirtual = {'GROUP_INPUT','SIMULATION_INPUT','SIMULATION_OUTPUT','REPEAT_INPUT','REPEAT_OUTPUT'}
@@ -4110,12 +3986,6 @@ dict_setKmiCats['oth'].add(VoronoiMassLinkerTool.bl_idname)
 class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vmltIgnoreCase: bpy.props.BoolProperty(name="Ignore case", default=True)
 
-with VlTrMapForKey(VoronoiMassLinkerTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi根据端口名批量快速连接"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiMassLinkerTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiMassLinkerTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiMassLinkerTool.bl_label}根据端口名批量连接设置:"
-
 dict_toolLangSpecifDataPool[VoronoiMassLinkerTool, ru_RU] = """"Малыш котопёс", не ноды, не сокеты. Создан ради редких точечных спец-ускорений.
 VLT на максималках. В связи со своим принципом работы, по своему божественен."""
 
@@ -4254,12 +4124,6 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vestDisplayLabels:       bpy.props.BoolProperty(name="Display enum names",   default=True)
     vestDarkStyle:           bpy.props.BoolProperty(name="Dark style",           default=False)
 
-with VlTrMapForKey(VoronoiEnumSelectorTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速切换节点内部下拉列表"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiEnumSelectorTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiEnumSelectorTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiEnumSelectorTool.bl_label}快速显示节点里下拉列表设置:"
-
 dict_toolLangSpecifDataPool[VoronoiEnumSelectorTool, ru_RU] = """Инструмент для удобно-ленивого переключения свойств перечисления.
 Избавляет от прицеливания мышкой, клика, а потом ещё одного прицеливания и клика."""
 
@@ -4392,9 +4256,6 @@ SmartAddToRegAndAddToKmiDefs(VoronoiLinkRepeatingTool, "###_V", {'toolMode':'SOC
 SmartAddToRegAndAddToKmiDefs(VoronoiLinkRepeatingTool, "S##_V", {'toolMode':'NODE'})
 dict_setKmiCats['oth'].add(VoronoiLinkRepeatingTool.bl_idname)
 
-with VlTrMapForKey(VoronoiLinkRepeatingTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi重复连接到上次用快速连接到的输出端" #dm[zh_CN] = "Voronoi快速恢复连接"
-
 dict_toolLangSpecifDataPool[VoronoiLinkRepeatingTool, ru_RU] = """Полноценное ответвление от VLT, повторяет любой предыдущий линк от большинства
 других инструментов. Обеспечивает удобство соединения "один ко многим"."""
 
@@ -4487,9 +4348,6 @@ class VoronoiQuickDimensionsTool(VoronoiToolTripleSk):
 
 SmartAddToRegAndAddToKmiDefs(VoronoiQuickDimensionsTool, "##A_D")
 dict_setKmiCats['spc'].add(VoronoiQuickDimensionsTool.bl_idname)
-
-with VlTrMapForKey(VoronoiQuickDimensionsTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速分离/合并 矢量/颜色"
 
 dict_toolLangSpecifDataPool[VoronoiQuickDimensionsTool, ru_RU] = "Инструмент для ускорения нужд разделения и объединения векторов (и цвета).\nА ещё может разделить геометрию на составляющие."
 
@@ -4762,9 +4620,6 @@ dict_setKmiCats['spc'].add(VoronoiInterfacerTool.bl_idname)
 class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vitPasteToAnySocket: bpy.props.BoolProperty(name="Allow paste to any socket", default=True)
 
-with VlTrMapForKey(VoronoiInterfacerTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi在节点组里快速复制粘贴端口名给节点组输入输出端"
-
 dict_toolLangSpecifDataPool[VoronoiInterfacerTool, ru_RU] = """Инструмент на уровне "The Great Trio". Ответвление от VLT ради удобного ускорения
 процесса создания и спец-манипуляций с интерфейсами. "Менеджер интерфейсов"."""
 
@@ -4838,9 +4693,6 @@ class VoronoiLinksTransferTool(VoronoiToolPairNd): #Todo2v6 кандидат н�
 SmartAddToRegAndAddToKmiDefs(VoronoiLinksTransferTool, "#C#_T")
 SmartAddToRegAndAddToKmiDefs(VoronoiLinksTransferTool, "SC#_T", {'isByIndexes':True})
 dict_setKmiCats['spc'].add(VoronoiLinksTransferTool.bl_idname)
-
-with VlTrMapForKey(VoronoiLinksTransferTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi链接按输入端类型切换到别的端口"
 
 dict_toolLangSpecifDataPool[VoronoiLinksTransferTool, ru_RU] = "Инструмент для редких нужд переноса всех линков с одного нода на другой.\nВ будущем скорее всего будет слито с VST."
 
@@ -4921,9 +4773,6 @@ dict_setKmiCats['spc'].add(VoronoiWarperTool.bl_idname)
 class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vwtSelectTargetKey: bpy.props.StringProperty(name="Select target Key", default='LEFT_ALT')
 
-with VlTrMapForKey(VoronoiWarperTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速聚焦某条连接"
-
 dict_toolLangSpecifDataPool[VoronoiWarperTool, ru_RU] = "Мини-ответвление реверс-инженеринга топологии, (как у VPT).\nИнструмент для \"точечных прыжков\" по сокетам."
 
 class VoronoiLazyNodeStencilsTool(VoronoiToolPairSk): #Первый инструмент, созданный по запросам извне, а не по моим личным хотелкам.
@@ -4974,12 +4823,6 @@ dict_setKmiCats['spc'].add(VoronoiLazyNodeStencilsTool.bl_idname)
 
 class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vlnstNonColorName:  bpy.props.StringProperty(name="Non-Color name",  default="Non-Color")
-
-with VlTrMapForKey(VoronoiLazyNodeStencilsTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi在输入端快速节点"
-with VlTrMapForKey(TxtClsBlabToolSett(VoronoiLazyNodeStencilsTool)) as dm:
-    dm[ru_RU] = f"Настройки инструмента {VoronoiLazyNodeStencilsTool.bl_label}:"
-    dm[zh_CN] = f"{VoronoiLazyNodeStencilsTool.bl_label}快速添加纹理设置:"
 
 dict_toolLangSpecifDataPool[VoronoiLazyNodeStencilsTool, ru_RU] = """Мощь. Три буквы на инструмент, дожили... Инкапсулирует Ctrl-T от
 NodeWrangler'а, и никогда не реализованный 'VoronoiLazyNodeContinuationTool'. """ #"Больше лени богу лени!"
@@ -5205,9 +5048,6 @@ SmartAddToRegAndAddToKmiDefs(VoronoiResetNodeTool, "###_BACK_SPACE")
 SmartAddToRegAndAddToKmiDefs(VoronoiResetNodeTool, "S##_BACK_SPACE", {'isResetEnums':True})
 dict_setKmiCats['spc'].add(VoronoiResetNodeTool.bl_idname)
 
-with VlTrMapForKey(VoronoiResetNodeTool.bl_label) as dm:
-    dm[zh_CN] = "Voronoi快速恢复节点默认参数"
-
 dict_toolLangSpecifDataPool[VoronoiResetNodeTool, ru_RU] = """Инструмент для сброса нодов без нужды прицеливания, с удобствами ведения мышкой
 и игнорированием свойств перечислений. Был создан, потому что в NW было похожее."""
 
@@ -5249,9 +5089,6 @@ dict_setKmiCats['grt'].add(VoronoiDummyTool.bl_idname)
 
 class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vdtDummy: bpy.props.StringProperty(name="Dummy", default="Dummy")
-
-with VlTrMapForKey(VoronoiDummyTool.bl_label) as dm:
-    dm[ru_RU] = "Voronoi Болванка"
 
 dict_toolLangSpecifDataPool[VoronoiDummyTool, ru_RU] = """"Ой дурачёк"."""
 
