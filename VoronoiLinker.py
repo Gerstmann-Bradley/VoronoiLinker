@@ -5509,51 +5509,12 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
             row.label(text=txt_addonVerDateCreated)
         colUrls = colMain.column()
         LyAddUrlHl(colUrls, "Check for updates yourself", "https://github.com/ugorek000/VoronoiLinker", txtHl="Latest%20version")
-        LyAddUrlHl(colUrls, "VL Wiki", bl_info['wiki_url'])
-        LyAddUrlHl(colUrls, "RANTO Git", "https://github.com/ugorek000/RANTO")
         colUrls.separator()
-        LyAddUrlHl(colUrls, "Event Type Items", "https://docs.blender.org/api/current/bpy_types_enum_items/event_type_items.html")
-        LyAddUrlHl(colUrls, "Translator guide", "https://developer.blender.org/docs/handbook/translating/translator_guide/")
-        LyAddUrlHl(colUrls, "Translator dev guide", "https://developer.blender.org/docs/handbook/translating/developer_guide/")
-        ##
-        colMain.separator()
         row = colMain.row(align=True)
         row.alignment = 'LEFT'
         row.operator(VoronoiOpAddonTabs.bl_idname, text=txt_copySettAsPyScript, icon='COPYDOWN').opt = 'GetPySett' #SCRIPT  COPYDOWN
-        with LyAddQuickInactiveCol(colMain, active=self.dsIncludeDev) as row:
-            row.prop(self,'dsIncludeDev')
-        ##
-        LyAddThinSep(colMain, 0.15)
-        rowSettings = colMain.box().row(align=True)
-        row = rowSettings.row(align=True)
-        row.ui_units_x = 20
-        view = bpy.context.preferences.view
-        row.prop(view,'language', text="")
-        row = rowSettings.row(align=True)
-        langCode = view.language
-        row.label(text=f"   '{langCode}'   ", translate=False)
-        #row = rowSettings.row(align=True)
-        #row.alignment = 'RIGHT'
-        row.prop(view,'use_translate_interface', text="Interface")
-        row.prop(view,'use_translate_tooltips', text="Tooltips")
         ##
         colVlTools = colMain.column(align=True)
-        for cls in dict_vtClasses:
-            if txtToolInfo:=dict_toolLangSpecifDataPool.get((cls, langCode), ""):
-                colDiscl = colVlTools.column(align=True)
-                rowLabel = colDiscl.row(align=True)
-                if LyAddDisclosureProp(rowLabel, self, cls.disclBoxPropNameInfo, txt=cls.bl_label+" Tool"):
-                    rowTool = colDiscl.row(align=True)
-                    rowTool.label(icon='BLANK1')
-                    rowTool.label(icon='BLANK1')
-                    colText = rowTool.column(align=True)
-                    for li in txtToolInfo.split("\n"):
-                        colText.label(text=li, translate=False)
-                with LyAddQuickInactiveCol(rowLabel, att='row') as row:
-                    row.alignment = 'LEFT'
-                    row.label(text=f"({cls.vlTripleName})", translate=False)
-                    row.alignment = 'EXPAND'
-                    #row.prop(self, cls.disclBoxPropNameInfo, text=" ", translate=False, emboss=False)
         ##
         colLangDebug = colMain.column(align=True)
         if (self.dsIncludeDev)or(self.vaLangDebDiscl):
@@ -5631,6 +5592,7 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
                     col.label(text=txt_vqmtThereIsNothing)
                     col.label(text=bl_info['description'])
                     col.label(text=txt_addonVerDateCreated)
+
                     col.label(text=txt_onlyFontFormat)
                     col.label(text=txt_copySettAsPyScript)
                     col.label(text=txt_сheckForUpdatesYourself)
