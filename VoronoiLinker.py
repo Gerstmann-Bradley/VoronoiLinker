@@ -1047,8 +1047,7 @@ class VoronoiToolFillers: #-1
     def InitTool(self, event, prefs, tree): return {}
     @staticmethod
     def LyDrawInAddonDiscl(col, prefs): pass
-    @classmethod
-    def BringTranslations(cls): pass
+
 class VoronoiToolRoot(VoronoiOpTool, VoronoiToolFillers): #0
     usefulnessForUndefTree = False
     usefulnessForNoneTree = False
@@ -1952,26 +1951,6 @@ class VoronoiLinkerTool(VoronoiToolPairSk): #Святая святых. То р�
         LyAddLeftProp(col, prefs,'vltDeselectAllNodes')
         LyAddLeftProp(col, prefs,'vltPriorityIgnoring')
         LyAddLeftProp(col, prefs,'vltSelectingInvolved')
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetPrefsRnaProp('vltRepickKey').name) as dm:
-            dm[ru_RU] = "Клавиша перевыбора"
-            dm[zh_CN] = "重选快捷键"
-        with VlTrMapForKey(GetPrefsRnaProp('vltReroutesCanInAnyType').name) as dm:
-            dm[ru_RU] = "Рероуты могут подключаться в любой тип"
-            dm[zh_CN] = "重新定向节点可以连接到任何类型的节点"
-        with VlTrMapForKey(GetPrefsRnaProp('vltDeselectAllNodes').name) as dm:
-            dm[ru_RU] = "Снять выделение со всех нодов при активации"
-            dm[zh_CN] = "快速连接时取消选择所有节点"
-        with VlTrMapForKey(GetPrefsRnaProp('vltPriorityIgnoring').name) as dm:
-            dm[ru_RU] = "Приоритетное игнорирование"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vltPriorityIgnoring').description) as dm:
-            dm[ru_RU] = "Высокоуровневое игнорирование \"надоедливых\" сокетов при первом поиске.\n(Сейчас только \"Alpha\"-сокет у нод изображений)"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vltSelectingInvolved').name) as dm:
-            dm[ru_RU] = "Выделять задействованные ноды"
-            dm[zh_CN] = "快速连接后自动选择连接的节点"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiLinkerTool, "###_RIGHTMOUSE") #"##A_RIGHTMOUSE"?
 dict_setKmiCats['grt'].add(VoronoiLinkerTool.bl_idname)
@@ -2257,69 +2236,6 @@ class VoronoiPreviewTool(VoronoiToolSk):
             row.prop(prefs,'vptHlTextScale', text="Scale")
             row.active = prefs.vptRvEeSksHighlighting
         LyAddLeftProp(col, prefs,'vptRvEeIsSavePreviewResults')
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectingPreviewedNode').name) as dm:
-            dm[ru_RU] = "Выделять предпросматриваемый нод"
-            dm[zh_CN] = "自动选择被预览的节点"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isTriggerOnlyOnLink').name) as dm:
-            dm[ru_RU] = "Только подключённые"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isTriggerOnlyOnLink').description) as dm:
-            dm[ru_RU] = "Цепляться только на подключённые сокеты"
-            dm[zh_CN] = "只预览已有连接的输出端口"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isEqualAnchorType').name) as dm:
-            dm[ru_RU] = "Равный тип якоря"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isEqualAnchorType').description) as dm:
-            dm[ru_RU] = "Цепляться только к сокетам типа якоря"
-            dm[zh_CN] = "切换Voronoi_Anchor转接点预览时,只有类型和当前预览的端口类型一样才能被预览连接"
-        ##
-        with VlTrMapForKey(GetPrefsRnaProp('vptAllowClassicGeoViewer').name) as dm:
-            dm[ru_RU] = "Разрешить классический Viewer Геометрических узлов"
-            dm[zh_CN] = "几何节点里使用默认预览方式"
-        with VlTrMapForKey(GetPrefsRnaProp('vptAllowClassicGeoViewer').description) as dm:
-            dm[ru_RU] = "Разрешить использование классического Viewer'а геометрических нодов путём клика по ноду"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vptAllowClassicCompositorViewer').name) as dm:
-            dm[ru_RU] = "Разрешить классический Viewer Композитора"
-            dm[zh_CN] = "合成器里使用默认预览方式"
-        with VlTrMapForKey(GetPrefsRnaProp('vptAllowClassicCompositorViewer').description) as dm:
-            dm[ru_RU] = "Разрешить использование классического Viewer'а композиторных нодов путём клика по ноду"
-            dm[zh_CN] = "默认是按顺序轮选输出接口端无法直选第N个通道接口"
-        with VlTrMapForKey(GetPrefsRnaProp('vptIsLivePreview').name) as dm:
-            dm[ru_RU] = "Предварительный просмотр в реальном времени"
-            dm[zh_CN] = "实时预览"
-        with VlTrMapForKey(GetPrefsRnaProp('vptIsLivePreview').description) as dm:
-            dm[ru_RU] = "Предпросмотр в реальном времени"
-            dm[zh_CN] = "即使没松开鼠标也能观察预览结果"
-        with VlTrMapForKey(GetPrefsRnaProp('vptRvEeIsColorOnionNodes').name) as dm:
-            dm[ru_RU] = "Луковичные цвета нод"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vptRvEeIsColorOnionNodes').description) as dm:
-            dm[ru_RU] = "Окрашивать топологически соединённые ноды"
-            dm[zh_CN] = "快速预览时将与预览的节点有连接关系的节点全部着色显示"
-        with VlTrMapForKey(GetPrefsRnaProp('vptRvEeSksHighlighting').name) as dm:
-            dm[ru_RU] = "Подсветка топологических соединений"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vptRvEeSksHighlighting').description) as dm:
-            dm[ru_RU] = "Отображать имена сокетов, чьи линки подсоединены к ноду"
-            dm[zh_CN] = "快速预览时高亮显示连接到预览的节点的上级节点的输出端口"
-        with VlTrMapForKey(GetPrefsRnaProp('vptRvEeIsSavePreviewResults').name) as dm:
-            dm[ru_RU] = "Сохранять результаты предпросмотра"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vptRvEeIsSavePreviewResults').description) as dm:
-            dm[ru_RU] = "Создавать предпросмотр через дополнительный нод, удобный для последующего копирования"
-            dm[zh_CN] = "保存预览结果,通过新建一个预览节点连接预览"
-        with VlTrMapForKey(GetPrefsRnaProp('vptOnionColorIn').name) as dm:
-            dm[ru_RU] = "Луковичный цвет входа"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vptOnionColorOut').name) as dm:
-            dm[ru_RU] = "Луковичный цвет выхода"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vptHlTextScale').name) as dm:
-            dm[ru_RU] = "Масштаб текста"
-#            dm[zh_CN] = ""
 
 
 SmartAddToRegAndAddToKmiDefs(VoronoiPreviewTool, "SC#_LEFTMOUSE")
@@ -2413,20 +2329,6 @@ class VoronoiPreviewAnchorTool(VoronoiToolSk): #Что ж, теперь это �
                     tree.links.new(nd.outputs[-1], rrAnch.inputs[0])
                     tree.nodes.remove(nd)
             return {'FINISHED'}
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetAnnotFromCls(cls,'anchorType').name) as dm:
-            dm[ru_RU] = "Тип якоря"
-            dm[zh_CN] = "转接点的类型"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isActiveAnchor').name) as dm:
-            dm[ru_RU] = "Делать якорь активным"
-            dm[zh_CN] = "转接点设置为活动项"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectAnchor').name) as dm:
-            dm[ru_RU] = "Выделять якорь"
-            dm[zh_CN] = "转接点高亮显示"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isDeleteNonCanonAnchors').name) as dm:
-            dm[ru_RU] = "Удалить имеющиеся якори"
-#            dm[zh_CN] = ""
 
 SmartAddToRegAndAddToKmiDefs(VoronoiPreviewAnchorTool, "SC#_RIGHTMOUSE")
 SmartAddToRegAndAddToKmiDefs(VoronoiPreviewAnchorTool, "SC#_1", {'anchorType':1})
@@ -2826,48 +2728,6 @@ class VoronoiMixerTool(VoronoiToolPairSk):
         LyAddHandSplitProp(colProps, prefs,f'{tlw}PieSocketDisplayType')
         LyAddHandSplitProp(colProps, prefs,f'{tlw}PieDisplaySocketColor')
         colProps.active = getattr(prefs,f'{tlw}PieType')=='CONTROL'
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isCanFromOne').name) as dm:
-            dm[ru_RU] = "Может от одного сокета"
-            dm[zh_CN] = "从一个端口连接"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isPlaceImmediately').name) as dm:
-            dm[ru_RU] = "Размещать моментально"
-            dm[zh_CN] = "立即添加节点到鼠标位置"
-        ##
-        with VlTrMapForKey(GetPrefsRnaProp('vmtReroutesCanInAnyType').name) as dm:
-            dm[ru_RU] = "Рероуты могут смешиваться с любым типом"
-            dm[zh_CN] = "快速混合不限定端口类型"
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieType').name) as dm:
-            dm[ru_RU] = "Тип пирога"
-            dm[zh_CN] = "饼菜单类型"
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieType',0).name) as dm:
-            dm[ru_RU] = "Контроль"
-            dm[zh_CN] = "控制(自定义)"
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieType',1).name) as dm:
-            dm[ru_RU] = "Скорость"
-            dm[zh_CN] = "速度型(多层菜单)"
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieScale').name) as dm:
-            dm[ru_RU] = "Размер пирога"
-            dm[zh_CN] = "饼菜单大小"
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieAlignment').name) as dm:
-            dm[ru_RU] = "Выравнивание между элементами"
-#            dm[zh_CN] = "元素对齐方式"?
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieAlignment').description) as dm:
-            dm[ru_RU] = "0 – Гладко.\n1 – Скруглённые состыкованные.\n2 – Зазор"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieSocketDisplayType').name) as dm:
-            dm[ru_RU] = "Отображение типа сокета"
-            dm[zh_CN] = "显示端口类型"
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieSocketDisplayType').description) as dm:
-            dm[ru_RU] = "0 – Выключено.\n1 – Сверху.\n-1 – Снизу (VMT)"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieDisplaySocketColor').name) as dm:
-            dm[ru_RU] = "Отображение цвета сокета"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vmtPieDisplaySocketColor').description) as dm:
-            dm[ru_RU] = "Знак – сторона цвета. Значение – ширина цвета"
-#            dm[zh_CN] = ""
 
 SmartAddToRegAndAddToKmiDefs(VoronoiMixerTool, "S#A_LEFTMOUSE") #Миксер перенесён на левую, чтобы освободить нагрузку для VQMT.
 dict_setKmiCats['grt'].add(VoronoiMixerTool.bl_idname)
@@ -3278,53 +3138,6 @@ class VoronoiQuickMathTool(VoronoiToolTripleSk):
         LyAddHandSplitProp(colProps, prefs,'vqmtPieSocketDisplayType')
         LyAddHandSplitProp(colProps, prefs,'vqmtPieDisplaySocketColor')
         colProps.active = getattr(prefs,'vqmtPieType')=='CONTROL'
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isHideOptions').name) as dm:
-            dm[ru_RU] = "Скрывать опции нода"
-            dm[zh_CN] = "隐藏节点选项"
-        #* Перевод isPlaceImmediately уже есть в VMT *
-        with VlTrMapForKey(GetAnnotFromCls(cls,'justPieCall').name) as dm:
-            dm[ru_RU] = "Просто вызвать пирог"
-            dm[zh_CN] = "仅调用饼图"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'justPieCall').description) as dm:
-            dm[ru_RU] = "Вызвать пирог для добавления нода, минуя выбор сокетов.\n0 – Выключено.\n1 – Float.\n2 – Vector.\n3 – Boolean.\n4 – Color"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isRepeatLastOperation').name) as dm:
-            dm[ru_RU] = "Повторить последнюю операцию"
-            dm[zh_CN] = "重复上一操作"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isRepeatLastOperation').description) as dm:
-            dm[ru_RU] = "Минуя вызов пирога, активирует последнюю использованную операцию для выбранного типа сокета.\n"+\
-                        "Ищет сокеты только из доступных предыдущих операций, которые были свершены для типа сокета.\n"+\
-                        "Просто вызов пирога и быстрая быстрая математика, не запоминаются как последние операции"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'quickOprFloat').name) as dm:
-            dm[ru_RU] = "Скаляр (быстро)"
-            dm[zh_CN] = "浮点（快速）"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'quickOprVector').name) as dm:
-            dm[ru_RU] = "Вектор (быстро)"
-            dm[zh_CN] = "矢量（快速）"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'quickOprBool').name) as dm:
-            dm[ru_RU] = "Логический (быстро)"
-            dm[zh_CN] = "布尔（快速）"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'quickOprColor').name) as dm:
-            dm[ru_RU] = "Цвет (быстро)"
-            dm[zh_CN] = "颜色（快速）"
-        ##
-        with VlTrMapForKey(GetPrefsRnaProp('vqmtIncludeThirdSk').name) as dm:
-            dm[ru_RU] = "Разрешить третий сокет"
-            dm[zh_CN] = "包括第三个端口"
-        with VlTrMapForKey(GetPrefsRnaProp('vqmtIncludeQuickPresets').name) as dm:
-            dm[ru_RU] = "Включить быстрые пресеты"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vqmtIncludeExistingValues').name) as dm:
-            dm[ru_RU] = "Включить существующие значения"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vqmtDisplayIcons').name) as dm:
-            dm[ru_RU] = "Отображать иконки"
-#            dm[zh_CN] = ""
-        #См. перевод vqmtRepickKey в VLT.
-        #Переводы vqmtPie такие же, как и в VMT.
 
 SmartAddToRegAndAddToKmiDefs(VoronoiQuickMathTool, "S#A_RIGHTMOUSE") #Осталось на правой, чтобы не охреневать от тройного клика левой при 'Speed Pie' типе пирога.
 SmartAddToRegAndAddToKmiDefs(VoronoiQuickMathTool, "##A_ACCENT_GRAVE", {'isRepeatLastOperation':True})
@@ -3870,58 +3683,6 @@ class VoronoiRantoTool(VoronoiToolNd): #Свершилось.
     def LyDrawInAddonDiscl(col, prefs):
         LyAddLeftProp(col, prefs,'vrtIsLiveRanto')
         LyAddLeftProp(col, prefs,'vrtIsFixIslands')
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey("This tool is empty") as dm:
-            dm[ru_RU] = "Этот инструмент пуст"
-#            dm[zh_CN] = ""
-        ##
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isOnlySelected').name) as dm:
-            dm[ru_RU] = "Только выделенные"
-            dm[zh_CN] = "仅选定的"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isOnlySelected').description) as dm:
-            dm[ru_RU] = "0 – Любой нод.\n1 – Выделенные + рероуты.\n2 – Только выделенные"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isUniWid').name) as dm:
-            dm[ru_RU] = "Постоянная ширина"
-            dm[zh_CN] = "统一宽度"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'widthNd').name) as dm:
-            dm[ru_RU] = "Ширина нод"
-            dm[zh_CN] = "节点宽度"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'indentX').name) as dm:
-            dm[ru_RU] = "Отступ по X"
-            dm[zh_CN] = "X缩进"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'indentY').name) as dm:
-            dm[ru_RU] = "Отступ по Y"
-            dm[zh_CN] = "Y缩进"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isUncollapseNodes').name) as dm:
-            dm[ru_RU] = "Разворачивать ноды"
-            dm[zh_CN] = "展开节点"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isDeleteReroutes').name) as dm:
-            dm[ru_RU] = "Удалять рероуты"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectNodes').name) as dm:
-            dm[ru_RU] = "Выделять ноды"
-            dm[zh_CN] = "选择节点"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectNodes').description) as dm:
-            dm[ru_RU] = "-1 – Де-выделять всё.\n 0 – Ничего не делать.\n 1 – Выделять задействованные ноды"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isIncludeMutedLinks').name) as dm:
-            dm[ru_RU] = "Разрешить выключенные линки"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isIncludeNonValidLinks').name) as dm:
-            dm[ru_RU] = "Разрешить невалидные линки"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isAccumulate').name) as dm:
-            dm[ru_RU] = "Накапливать"
-#            dm[zh_CN] = ""
-        ##
-        with VlTrMapForKey(GetPrefsRnaProp('vrtIsLiveRanto').name) as dm:
-            dm[ru_RU] = "Ranto в реальном времени"
-            dm[zh_CN] = "实时对齐"
-        with VlTrMapForKey(GetPrefsRnaProp('vrtIsFixIslands').name) as dm:
-            dm[ru_RU] = "Чинить острова"
-            dm[zh_CN] = ""
 
 SmartAddToRegAndAddToKmiDefs(VoronoiRantoTool, "###_R")
 SmartAddToRegAndAddToKmiDefs(VoronoiRantoTool, "S##_R", {'isAccumulate':True})
@@ -4056,30 +3817,6 @@ class VoronoiSwapperTool(VoronoiToolPairSk):
                             tree.links.new(lk.from_socket, skIo1)
                             tree.links.remove(lk)
         #VST VLRT же без нужды, да ведь?
-    @classmethod
-    def BringTranslations(cls):
-        tran = GetAnnotFromCls(cls,'toolMode').items
-        with VlTrMapForKey(tran.SWAP.name) as dm:
-            dm[ru_RU] = "Поменять"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.SWAP.description) as dm:
-            dm[ru_RU] = "Все линки у первого сокета будут на втором, у второго на первом"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.ADD.name) as dm:
-            dm[ru_RU] = "Добавить"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.ADD.description) as dm:
-            dm[ru_RU] = "Добавить все линки со второго сокета на первый. Второй будет пустым"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.TRAN.name) as dm:
-            dm[ru_RU] = "Переместить"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.TRAN.description) as dm:
-            dm[ru_RU] = "Переместить все линки со второго сокета на первый с заменой"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isCanAnyType').name) as dm:
-            dm[ru_RU] = "Может меняться с любым типом"
-            dm[zh_CN] = "可以与任何类型交换"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiSwapperTool, "S##_S", {'toolMode':'SWAP'})
 SmartAddToRegAndAddToKmiDefs(VoronoiSwapperTool, "##A_S", {'toolMode':'ADD'})
@@ -4167,52 +3904,6 @@ class VoronoiHiderTool(VoronoiToolAny):
         LyAddHandSplitProp(col, prefs,'vhtNeverHideGeometry')
         LyAddHandSplitProp(col, prefs,'vhtIsUnhideVirtual', forceBoolean=2)
         LyAddLeftProp(col, prefs,'vhtIsToggleNodesOnDrag')
-    @classmethod
-    def BringTranslations(cls):
-        tran = GetAnnotFromCls(cls,'toolMode').items
-        with VlTrMapForKey(tran.NODE.name) as dm:
-            dm[ru_RU] = "Авто-нод"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.NODE.description) as dm:
-            dm[ru_RU] = "Автоматически обработать сокрытие сокетов для нода"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.SOCKET.description) as dm:
-            dm[ru_RU] = "Сокрытие сокета"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.SOCKETVAL.name) as dm:
-            dm[ru_RU] = "Значение сокета"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.SOCKETVAL.description) as dm:
-            dm[ru_RU] = "Переключение видимости содержимого сокета"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isTriggerOnCollapsedNodes').name) as dm:
-            dm[ru_RU] = "Триггериться на свёрнутые ноды"
-            dm[zh_CN] = "仅触发已折叠节点"
-        ##
-        with VlTrMapForKey(GetPrefsRnaProp('vhtHideBoolSocket').name) as dm:
-            dm[ru_RU] = "Скрывать Boolean сокеты"
-            dm[zh_CN] = "隐藏布尔端口"
-        with VlTrMapForKey(GetPrefsRnaProp('vhtHideHiddenBoolSocket').name) as dm:
-            dm[ru_RU] = "Скрывать скрытые Boolean сокеты"
-            dm[zh_CN] = "隐藏已隐藏的布尔端口"
-        with VlTrMapForKey(GetPrefsRnaProp('vhtHideBoolSocket',1).name) as dm:
-            dm[ru_RU] = "Если True"
-            dm[zh_CN] = "如果为True"
-        with VlTrMapForKey(GetPrefsRnaProp('vhtHideBoolSocket',3).name) as dm:
-            dm[ru_RU] = "Если False"
-            dm[zh_CN] = "如果为False"
-        with VlTrMapForKey(GetPrefsRnaProp('vhtNeverHideGeometry').name) as dm:
-            dm[ru_RU] = "Никогда не скрывать входные сокеты геометрии"
-            dm[zh_CN] = "永不隐藏几何输入端口"
-        with VlTrMapForKey(GetPrefsRnaProp('vhtNeverHideGeometry',1).name) as dm:
-            dm[ru_RU] = "Только первый"
-            dm[zh_CN] = "仅第一个端口"
-        with VlTrMapForKey(GetPrefsRnaProp('vhtIsUnhideVirtual').name) as dm:
-            dm[ru_RU] = "Показывать виртуальные сокеты"
-            dm[zh_CN] = "显示虚拟端口"
-        with VlTrMapForKey(GetPrefsRnaProp('vhtIsToggleNodesOnDrag').name) as dm:
-            dm[ru_RU] = "Переключать ноды при ведении курсора" #"Обрабатывать ноды в реальном времени"
-            dm[zh_CN] = "移动光标时切换节点"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiHiderTool, "S##_E", {'toolMode':'SOCKET'})
 SmartAddToRegAndAddToKmiDefs(VoronoiHiderTool, "##A_E", {'toolMode':'SOCKETVAL'})
@@ -4421,15 +4112,6 @@ class VoronoiMassLinkerTool(VoronoiToolRoot): #"Малыш котопёс", не
     @staticmethod
     def LyDrawInAddonDiscl(col, prefs):
         LyAddLeftProp(col, prefs,'vmltIgnoreCase')
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isIgnoreExistingLinks').name) as dm:
-            dm[ru_RU] = "Игнорировать существующие связи"
-            dm[zh_CN] = "忽略现有链接"
-        ##
-        with VlTrMapForKey(GetPrefsRnaProp('vmltIgnoreCase').name) as dm:
-            dm[ru_RU] = "Игнорировать регистр"
-            dm[zh_CN] = "忽略端口名称的大小写"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiMassLinkerTool, "SCA_LEFTMOUSE")
 SmartAddToRegAndAddToKmiDefs(VoronoiMassLinkerTool, "SCA_RIGHTMOUSE", {'isIgnoreExistingLinks':True})
@@ -4568,43 +4250,6 @@ class VoronoiEnumSelectorTool(VoronoiToolNd):
         LyAddHandSplitProp(colBox, prefs,'vestBoxScale')
         LyAddHandSplitProp(colBox, prefs,'vestDisplayLabels')
         LyAddHandSplitProp(colBox, prefs,'vestDarkStyle')
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey("Box ") as dm:
-            dm[ru_RU] = "Коробка"
-        ##
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isInstantActivation').name) as dm:
-            dm[ru_RU] = "Моментальная активация"
-            dm[zh_CN] = "直接打开饼菜单"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isInstantActivation').description) as dm:
-            dm[ru_RU] = "Пропустить рисование к ноду и активацию при отпускании, и активировать немедленно при нажатии"
-            dm[zh_CN] = "不勾选可以先根据鼠标位置动态选择节点"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isPieChoice').name) as dm:
-            dm[ru_RU] = "Выбор пирогом"
-            dm[zh_CN] = "饼菜单选择"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isPieChoice').description) as dm:
-            dm[ru_RU] = "Позволяет выбрать элемент отпусканием клавиши"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isToggleOptions').name) as dm:
-            dm[ru_RU] = "Переключение опций нода"
-#            dm[zh_CN] = "隐藏节点里的下拉列表"?
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectNode').name) as dm:
-            dm[ru_RU] = "Выделять целевой нод"
-            dm[zh_CN] = "选择目标节点"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectNode').description) as dm:
-            dm[ru_RU] = "0 – Не выделять.\n1 – Выделять.\n2 – и центрировать.\n3 – и приближать"
-#            dm[zh_CN] = ""
-        ##
-        #* Перевод vestIsToggleNodesOnDrag уже есть в VHT *
-        with VlTrMapForKey(GetPrefsRnaProp('vestBoxScale').name) as dm:
-            dm[ru_RU] = "Масштаб панели"
-            dm[zh_CN] = "下拉列表面板大小"
-        with VlTrMapForKey(GetPrefsRnaProp('vestDisplayLabels').name) as dm:
-            dm[ru_RU] = "Отображать имена свойств перечислений"
-            dm[zh_CN] = "显示下拉列表属性名称"
-        with VlTrMapForKey(GetPrefsRnaProp('vestDarkStyle').name) as dm:
-            dm[ru_RU] = "Тёмный стиль"
-            dm[zh_CN] = "暗色风格"
 
 #Изначально хотел 'V_Sca', но слишком далеко тянуться пальцем до V. И вообще, учитывая причину создания этого инструмента, нужно минимизировать сложность вызова.
 SmartAddToRegAndAddToKmiDefs(VoronoiEnumSelectorTool, "###_F", {'isPieChoice':True, 'isSelectNode':3})
@@ -4752,21 +4397,6 @@ class VoronoiLinkRepeatingTool(VoronoiToolAny): #Вынесено в отдел�
                 except:
                     setattr(VlrtData, txtAttReprLastSk, "")
         #Заметка: Оказывается, Ctrl-Z делает (глобально сохранённую) ссылку на tree 'ReferenceError: StructRNA of type ShaderNodeTree has been removed'.
-    @classmethod
-    def BringTranslations(cls):
-        tran = GetAnnotFromCls(cls,'toolMode').items
-        with VlTrMapForKey(tran.SOCKET.name) as dm:
-            dm[ru_RU] = "Для сокета"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.SOCKET.description) as dm:
-            dm[ru_RU] = "Используя последний линк, созданный каким-н. из инструментов, создать такой же для указанного сокета"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.NODE.name) as dm:
-            dm[ru_RU] = "Для нода"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.NODE.description) as dm:
-            dm[ru_RU] = "Используя имя последнего сокета, найти и соединить для выбранного нода"
-            dm[zh_CN] = "鼠标移动到节点旁自动恢复节点的连接"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiLinkRepeatingTool, "###_V", {'toolMode':'SOCKET'})
 SmartAddToRegAndAddToKmiDefs(VoronoiLinkRepeatingTool, "S##_V", {'toolMode':'NODE'})
@@ -5130,49 +4760,6 @@ class VoronoiInterfacerTool(VoronoiToolPairSk):
     @staticmethod
     def LyDrawInAddonDiscl(col, prefs):
         LyAddLeftProp(col, prefs,'vitPasteToAnySocket')
-    @classmethod
-    def BringTranslations(cls):
-        tran = GetAnnotFromCls(cls,'toolMode').items
-        with VlTrMapForKey(tran.COPY.name) as dm:
-            dm[ru_RU] = "Копировать"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.COPY.description) as dm:
-            dm[ru_RU] = "Копировать имя сокета в буфер обмена"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.PASTE.name) as dm:
-            dm[ru_RU] = "Вставить"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.PASTE.description) as dm:
-            dm[ru_RU] = "Вставить содержимое буфера обмена в имя интерфейса"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.SWAP.name) as dm:
-            dm[ru_RU] = "Поменять местами"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.SWAP.description) as dm:
-            dm[ru_RU] = "Поменять местами два интерфейса"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.FLIP.name) as dm:
-            dm[ru_RU] = "Сдвинуть"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.FLIP.description) as dm:
-            dm[ru_RU] = "Переместить интерфейс на новое место, сдвигая всех остальных"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.NEW.name) as dm:
-            dm[ru_RU] = "Добавить"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.NEW.description) as dm:
-            dm[ru_RU] = "Добавить интерфейс с помощью виртуальных сокетов"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.CREATE.name) as dm:
-            dm[ru_RU] = "Создать"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(tran.CREATE.description) as dm:
-            dm[ru_RU] = "Создать интерфейс из выбранного сокета, и вставить его на указанное место"
-#            dm[zh_CN] = ""
-        ##
-        with VlTrMapForKey(GetPrefsRnaProp('vitPasteToAnySocket').name) as dm:
-            dm[ru_RU] = "Разрешить вставку в любой сокет"
-#            dm[zh_CN] = ""
 
 SmartAddToRegAndAddToKmiDefs(VoronoiInterfacerTool, "SC#_A", {'toolMode':'NEW'})
 SmartAddToRegAndAddToKmiDefs(VoronoiInterfacerTool, "S#A_A", {'toolMode':'CREATE'})
@@ -5257,11 +4844,6 @@ class VoronoiLinksTransferTool(VoronoiToolPairNd): #Todo2v6 кандидат н�
                     for lk in zp[0].vl_sold_links_final:
                         if not lk.is_muted:
                             NewLink(zp[1], lk)
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetAnnotFromCls(VoronoiLinksTransferTool,'isByIndexes').name) as dm:
-            dm[ru_RU] = "Переносить по индексам"
-            dm[zh_CN] = "按顺序传输"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiLinksTransferTool, "#C#_T")
 SmartAddToRegAndAddToKmiDefs(VoronoiLinksTransferTool, "SC#_T", {'isByIndexes':True})
@@ -5341,21 +4923,6 @@ class VoronoiWarperTool(VoronoiToolSk):
     @staticmethod
     def LyDrawInAddonDiscl(col, prefs):
         LyAddKeyTxtProp(col, prefs,'vwtSelectTargetKey')
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isZoomedTo').name) as dm:
-            dm[ru_RU] = "Центрировать"
-            dm[zh_CN] = "自动最大化显示"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectReroutes').name) as dm:
-            dm[ru_RU] = "Выделять рероуты"
-            dm[zh_CN] = "选择更改路线"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectReroutes').description) as dm:
-            dm[ru_RU] = "-1 – Де-выделять всех.\n 0 – Ничего не делать.\n 1 – Выделять связанные рероуты"
-#            dm[zh_CN] = ""
-        ##
-        with VlTrMapForKey(GetPrefsRnaProp('vwtSelectTargetKey').name) as dm:
-            dm[ru_RU] = "Клавиша выделения цели"
-            dm[zh_CN] = "选择目标快捷键"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiWarperTool, "##A_W")
 SmartAddToRegAndAddToKmiDefs(VoronoiWarperTool, "S#A_W", {'isZoomedTo':False})
@@ -5411,14 +4978,6 @@ class VoronoiLazyNodeStencilsTool(VoronoiToolPairSk): #Первый инстру
     def LyDrawInAddonDiscl(col, prefs):
         LyAddNiceColorProp(col, prefs,'vlnstNonColorName')
         LyAddNiceColorProp(col, prefs,'vlnstLastExecError', ico='ERROR' if prefs.vlnstLastExecError else 'NONE', decor=0)
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetPrefsRnaProp('vlnstNonColorName').name) as dm:
-            dm[ru_RU] = "Название \"Не-цветовых данных\""
-            dm[zh_CN] = "图片纹理色彩空间名称"
-        with VlTrMapForKey(GetPrefsRnaProp('vlnstLastExecError').name) as dm:
-            dm[ru_RU] = "Последняя ошибка выполнения"
-            dm[zh_CN] = "上次运行时错误"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiLazyNodeStencilsTool, "##A_Q")
 dict_setKmiCats['spc'].add(VoronoiLazyNodeStencilsTool.bl_idname)
@@ -5651,17 +5210,6 @@ class VoronoiResetNodeTool(VoronoiToolNd):
         self.VrntDoResetNode(self.fotagoNd.tar, tree)
     def InitTool(self, event, prefs, tree):
         self.set_done = set() #Без этого будет очень "страшна"-поведение, а если переусердствовать, то скорее всего краш.
-    @classmethod
-    def BringTranslations(cls):
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isResetEnums').name) as dm:
-            dm[ru_RU] = "Восстанавливать свойства перечисления"
-            dm[zh_CN] = "恢复下拉列表里的选择"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isResetOnDrag').name) as dm:
-            dm[ru_RU] = "Восстанавливать при ведении курсора (не рекомендуется)"
-#            dm[zh_CN] = "悬停时恢复"
-        with VlTrMapForKey(GetAnnotFromCls(cls,'isSelectResetedNode').name) as dm:
-            dm[ru_RU] = "Выделять восстановленный нод"
-            dm[zh_CN] = "选择重置的节点"
 
 SmartAddToRegAndAddToKmiDefs(VoronoiResetNodeTool, "###_BACK_SPACE")
 SmartAddToRegAndAddToKmiDefs(VoronoiResetNodeTool, "S##_BACK_SPACE", {'isResetEnums':True})
@@ -5705,9 +5253,6 @@ class VoronoiDummyTool(VoronoiToolSk): #Шаблон для быстро-удо�
     @staticmethod
     def LyDrawInAddonDiscl(col, prefs):
         LyAddNiceColorProp(col, prefs,'vdtDummy')
-    @classmethod
-    def BringTranslations(cls):
-        pass
 
 #SmartAddToRegAndAddToKmiDefs(VoronoiDummyTool, "###_D", {'isDummy':True})
 dict_setKmiCats['grt'].add(VoronoiDummyTool.bl_idname)
@@ -5999,131 +5544,6 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
     vIsOverwriteZoomLimits: bpy.props.BoolProperty(name="Overwriting zoom limits", default=False)
     vOwZoomMin: bpy.props.FloatProperty(name="Zoom min", default=0.05,  min=0.0078125, max=1.0,  precision=3)
     vOwZoomMax: bpy.props.FloatProperty(name="Zoom max", default=2.301, min=1.0,       max=16.0, precision=3)
-class VoronoiAddonPrefs(VoronoiAddonPrefs):
-    @staticmethod
-    def BringTranslations():
-        with VlTrMapForKey(GetPrefsRnaProp('vaInfoRestore').description) as dm:
-            dm[ru_RU] = "Этот список лишь копия из настроек. \"Восстановление\" восстановит всё, а не только аддон"
-            dm[zh_CN] = "危险:“恢复”按钮将恢复整个快捷键里“节点编辑器”类中的所有设置,而不仅仅是恢复此插件!下面只显示本插件的快捷键。"
-        with VlTrMapForKey(GetPrefsRnaProp('vaKmiMainstreamDiscl').name) as dm:
-            dm[ru_RU] = "Великое трио"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vaKmiOtjersDiscl').name) as dm:
-            dm[ru_RU] = "Другие"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vaKmiSpecialDiscl').name) as dm:
-            dm[ru_RU] = "Специальные"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vaKmiQqmDiscl').name) as dm:
-            dm[ru_RU] = "Быстрая быстрая математика"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vaKmiCustomDiscl').name) as dm:
-            dm[ru_RU] = "Кастомные"
-#            dm[zh_CN] = ""
-        #== Draw ==
-        with VlTrMapForKey(GetPrefsRnaProp('dsUniformColor').name) as dm:
-            dm[ru_RU] = "Альтернативный постоянный цвет"
-            dm[zh_CN] = "自定义轮选时端口的颜色"
-        with VlTrMapForKey(GetPrefsRnaProp('dsUniformNodeColor').name) as dm:
-            dm[ru_RU] = "Альтернативный цвет нодов"
-            dm[zh_CN] = "动态选择节点时标识的颜色(显示下拉列表时)"
-        with VlTrMapForKey(GetPrefsRnaProp('dsCursorColor').name) as dm:
-            dm[ru_RU] = "Цвет курсора"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('dsCursorColorAvailability').name) as dm:
-            dm[ru_RU] = "Наличие цвета курсора"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('dsCursorColorAvailability').description) as dm:
-            dm[ru_RU] = "Если линия рисуется к курсору, окрашивать её часть в цвет курсора.\n0 – Выключено.\n1 – Для одной линии.\n2 – Всегда"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('dsSocketAreaAlpha').name) as dm:
-            dm[ru_RU] = "Прозрачность области сокета"
-            dm[zh_CN] = "端口区域的透明度"
-        with VlTrMapForKey(GetPrefsRnaProp('dsFontFile').name) as dm:
-            dm[ru_RU] = "Файл шрифта"
-            dm[zh_CN] = "字体文件"
-        with VlTrMapForKey(GetPrefsRnaProp('dsManualAdjustment').name) as dm:
-            dm[ru_RU] = "Ручная корректировка"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('dsManualAdjustment').description) as dm:
-            dm[ru_RU] = "Смещение текста по оси Y для данного шрифта"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('dsPointOffsetX').name) as dm:
-            dm[ru_RU] = "Смещение точки по оси X"
-            dm[zh_CN] = "X轴上的点偏移"
-        with VlTrMapForKey(GetPrefsRnaProp('dsFrameOffset').name) as dm:
-            dm[ru_RU] = "Размер рамки"
-            dm[zh_CN] = "边框大小"
-        with VlTrMapForKey(GetPrefsRnaProp('dsFontSize').name) as dm:
-            dm[ru_RU] = "Размер шрифта"
-            dm[zh_CN] = "字体大小"
-        with VlTrMapForKey(GetPrefsRnaProp('dsMarkerStyle').name) as dm:
-            dm[ru_RU] = "Стиль маркера"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('dsIsDrawSkArea').name) as dm:
-            dm[ru_RU] = "Область сокета"
-            dm[zh_CN] = "高亮显示选中端口"
-        with VlTrMapForKey(GetPrefsRnaProp('dsDisplayStyle').name) as dm:
-            dm[ru_RU] = "Стиль отображения рамки"
-            dm[zh_CN] = "边框显示样式"
-        with VlTrMapForKey(GetPrefsRnaProp('dsDisplayStyle',0).name) as dm:
-            dm[ru_RU] = "Классический"
-            dm[zh_CN] = "经典"
-        with VlTrMapForKey(GetPrefsRnaProp('dsDisplayStyle',1).name) as dm:
-            dm[ru_RU] = "Упрощённый"
-            dm[zh_CN] = "简化"
-        with VlTrMapForKey(GetPrefsRnaProp('dsDisplayStyle',2).name) as dm:
-            dm[ru_RU] = "Только текст"
-            dm[zh_CN] = "仅文本"
-        with VlTrMapForKey(GetPrefsRnaProp('dsPointScale').name) as dm:
-            dm[ru_RU] = "Масштаб точки"
-#            dm[zh_CN] = "点的大小"?
-        with VlTrMapForKey(GetPrefsRnaProp('dsDistFromCursor').name) as dm:
-            dm[ru_RU] = "Расстояние до текста от курсора"
-            dm[zh_CN] = "到文本的距离"
-        with VlTrMapForKey(GetPrefsRnaProp('dsIsAlwaysLine').name) as dm:
-            dm[ru_RU] = "Всегда рисовать линию"
-            dm[zh_CN] = "始终绘制线条"
-        with VlTrMapForKey(GetPrefsRnaProp('dsIsAlwaysLine').description) as dm:
-            dm[ru_RU] = "Рисовать линию к курсору даже от одного выбранного сокета"
-            dm[zh_CN] = "在鼠标移动到移动到已有连接端口的时是否还显示连线"
-        with VlTrMapForKey(GetPrefsRnaProp('dsIsSlideOnNodes').name) as dm:
-            dm[ru_RU] = "Скользить по нодам"
-            dm[zh_CN] = "在节点上滑动"
-        with VlTrMapForKey(GetPrefsRnaProp('dsIsAllowTextShadow').name) as dm:
-            dm[ru_RU] = "Включить тень текста"
-            dm[zh_CN] = "启用文本阴影"
-        with VlTrMapForKey(GetPrefsRnaProp('dsShadowCol').name) as dm:
-            dm[ru_RU] = "Цвет тени"
-            dm[zh_CN] = "阴影颜色"
-        with VlTrMapForKey(GetPrefsRnaProp('dsShadowOffset').name) as dm:
-            dm[ru_RU] = "Смещение тени"
-            dm[zh_CN] = "阴影偏移"
-        with VlTrMapForKey(GetPrefsRnaProp('dsShadowBlur').name) as dm:
-            dm[ru_RU] = "Размытие тени"
-            dm[zh_CN] = "阴影模糊"
-        #== Settings ==
-        with VlTrMapForKey(GetPrefsRnaProp('vEdgePanFac').name) as dm:
-            dm[ru_RU] = "Фактор панорамирования масштаба"
-            dm[zh_CN] = "边缘平移缩放系数"
-        with VlTrMapForKey(GetPrefsRnaProp('vEdgePanFac').description) as dm:
-            dm[ru_RU] = "0.0 – Только сдвиг; 1.0 – Только масштаб"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vEdgePanSpeed').name) as dm:
-            dm[ru_RU] = "Скорость краевого панорамирования"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vIsOverwriteZoomLimits').name) as dm:
-            dm[ru_RU] = "Перезапись лимитов масштаба"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vOwZoomMin').name) as dm:
-            dm[ru_RU] = "Минимальный масштаб"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('vOwZoomMax').name) as dm:
-            dm[ru_RU] = "Максимальный масштаб"
-#            dm[zh_CN] = ""
-        with VlTrMapForKey(GetPrefsRnaProp('dsIsDrawNodeNameLabel').name) as dm:
-            dm[ru_RU] = "Показывать заголовок для нода"
-            dm[zh_CN] = "显示节点标签"
 
 class VoronoiAddonPrefs(VoronoiAddonPrefs):
     def LyDrawTabSettings(self, where):
@@ -6516,13 +5936,15 @@ dict_classes[VoronoiAddonPrefs] = True
 list_addonKeymaps = []
 
 isRegisterFromMain = False
+
 def register():
     for dk in dict_classes:
         bpy.utils.register_class(dk)
-    ##
+
+    # Initialize preferences
     prefs = Prefs()
     if isRegisterFromMain:
-        if hasattr(bpy.types.SpaceNodeEditor,'handle'):
+        if hasattr(bpy.types.SpaceNodeEditor, 'handle'):
             bpy.types.SpaceNodeEditor.nsReg = perf_counter_ns()
     else:
         prefs.vlnstLastExecError = ""
@@ -6530,44 +5952,44 @@ def register():
         for cls in dict_vtClasses:
             setattr(prefs, cls.disclBoxPropNameInfo, False)
         prefs.dsIsTestDrawing = False
-    ##
+
+    # Register keymap items
     kmANe = bpy.context.window_manager.keyconfigs.addon.keymaps.new(name="Node Editor", space_type='NODE_EDITOR')
     for blid, key, shift, ctrl, alt, repeat, dict_props in list_kmiDefs:
         kmi = kmANe.keymap_items.new(idname=blid, type=key, value='PRESS', shift=shift, ctrl=ctrl, alt=alt, repeat=repeat)
-        kmi.active = blid!='node.voronoi_dummy'
+        kmi.active = blid != 'node.voronoi_dummy'
         if dict_props:
             for dk, dv in dict_props.items():
                 setattr(kmi.properties, dk, dv)
         list_addonKeymaps.append(kmi)
-    ##
-    RegisterTranslations()
+
+    # Register node connection logic (soldering system)
     RegisterSolderings()
+
 def unregister():
+    # Unregister soldering logic
     UnregisterSolderings()
-    UnregisterTranslations()
-    ##
+
+    # Remove keymap items
     kmANe = bpy.context.window_manager.keyconfigs.addon.keymaps["Node Editor"]
     for li in list_addonKeymaps:
         kmANe.keymap_items.remove(li)
     list_addonKeymaps.clear()
-    ##
+
+    # Unregister Blender classes
     for dk in dict_classes:
         bpy.utils.unregister_class(dk)
 
-#Мой гит в bl_info, это конечно же круто, однако было бы неплохо иметь ещё и явно указанные способы связи:
-#  coaltangle@gmail.com
-#  ^ Моя почта. Если вдруг случится апокалипсис, или эта VL-археологическая-находка сможет решить не-полиномиальную задачу, то писать туда.
-# Для более реалтаймового общения (предпочтительно) и по вопросам о VL и его коде пишите на мой дискорд 'ugorek#6434'.
-# А ещё есть тема на blenderartists.org/t/voronoi-linker-addon-node-wrangler-killer
-
-def DisableKmis(): #Для повторных запусков скрипта. Работает до первого "Restore".
+# For repeated script runs, disables existing keymaps to avoid duplicates.
+def DisableKmis():
     kmUNe = GetUserKmNe()
     for li, *oi in list_kmiDefs:
         for kmiCon in kmUNe.keymap_items:
-            if li==kmiCon.idname:
-                kmiCon.active = False #Это удаляет дубликаты. Хак?
-                kmiCon.active = True #Вернуть обратно, если оригинал.
-if __name__=="__main__":
-    DisableKmis() #Кажется не важно в какой очерёдности вызывать, перед или после добавления хоткеев.
+            if li == kmiCon.idname:
+                kmiCon.active = False  # Deactivate duplicates
+                kmiCon.active = True   # Reactivate original
+
+if __name__ == "__main__":
+    DisableKmis()
     isRegisterFromMain = True
     register()
