@@ -161,38 +161,7 @@ class VlTrMapForKey():
 def TxtClsBlabToolSett(cls):
     return cls.bl_label+" tool settings"
 
-class TranslationHelper():
-    def __init__(self, dict_trans={}, lang=''):
-        self.name = voronoiAddonName+"-"+lang
-        self.dict_translations = dict()
-        for cyc, dict_data in enumerate(dict_trans.values()):
-            for dk, dv in dict_data.items():
-                if cyc:
-                    self.dict_translations.setdefault(lang, {})[ ('Operator', dk) ] = dv
-                self.dict_translations.setdefault(lang, {})[ ('*', dk) ] = dv
-    def register(self):
-        if self.dict_translations:
-            try:
-                bpy.app.translations.register(self.name, self.dict_translations)
-            except:
-                with TryAndPass():
-                    bpy.app.translations.unregister(self.name)
-                    bpy.app.translations.register(self.name, self.dict_translations)
-    def unregister(self):
-        bpy.app.translations.unregister(self.name)
-
 list_translationClasses = []
-
-def RegisterTranslations():
-    CollectTranslationDict()
-    for dk in dict_vlHhTranslations:
-        list_translationClasses.append(TranslationHelper(dict_vlHhTranslations[dk]['trans'], dk))
-    for li in list_translationClasses:
-        li.register()
-def UnregisterTranslations():
-    for li in list_translationClasses:
-        li.unregister()
-
 
 txtAddonVer = ".".join([str(v) for v in bl_info['version']])
 txt_addonVerDateCreated = f"Version {txtAddonVer} created {bl_info['created']}"
@@ -235,28 +204,6 @@ def GetAnnotFromCls(cls, key): #Так вот где они прятались, 
 def GetPrefsRnaProp(att, inx=-1):
     prop = prefsTran.rna_type.properties[att]
     return prop if inx==-1 else getattr(prop,'enum_items')[inx]
-
-def CollectTranslationDict(): #Для удобства переводов, которые требуют регистрации свойств. См. BringTranslations'ы.
-    global prefsTran
-    prefsTran = Prefs()
-    ##
-    for cls in dict_vtClasses:
-        cls.BringTranslations()
-    VoronoiAddonPrefs.BringTranslations()
-    ##
-    with VlTrMapForKey(GetAnnotFromCls(VoronoiToolRoot,'isPassThrough').name) as dm:
-        dm[ru_RU] = "Пропускать через выделение нода"
-    with VlTrMapForKey(GetAnnotFromCls(VoronoiToolRoot,'isPassThrough').description) as dm:
-        dm[ru_RU] = "Клик над нодом активирует выделение, а не инструмент"
-    with VlTrMapForKey(GetAnnotFromCls(VoronoiToolPairSk,'isCanBetweenFields').name) as dm:
-        dm[ru_RU] = "Может между полями"
-    with VlTrMapForKey(GetAnnotFromCls(VoronoiToolPairSk,'isCanBetweenFields').description) as dm:
-        dm[ru_RU] = "Инструмент может искать сокеты между различными типами полей"
-    ##
-    dict_vlHhTranslations['zh_HANS'] = dict_vlHhTranslations['zh_CN']
-    for cls in dict_vtClasses:
-        if (cls, 'zh_CN') in dict_toolLangSpecifDataPool:
-            dict_toolLangSpecifDataPool[cls, 'zh_HANS'] = dict_toolLangSpecifDataPool[cls, 'zh_CN']
 
 dict_toolLangSpecifDataPool = {}
 
@@ -5560,7 +5507,6 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
         with LyAddQuickInactiveCol(colMain, att='column') as row:
             row.alignment = 'LEFT'
             row.label(text=txt_addonVerDateCreated)
-            row.label(text=txt_addonBlVerSupporting)
         colUrls = colMain.column()
         LyAddUrlHl(colUrls, "Check for updates yourself", "https://github.com/ugorek000/VoronoiLinker", txtHl="Latest%20version")
         LyAddUrlHl(colUrls, "VL Wiki", bl_info['wiki_url'])
@@ -5685,7 +5631,6 @@ class VoronoiAddonPrefs(VoronoiAddonPrefs):
                     col.label(text=txt_vqmtThereIsNothing)
                     col.label(text=bl_info['description'])
                     col.label(text=txt_addonVerDateCreated)
-                    col.label(text=txt_addonBlVerSupporting)
                     col.label(text=txt_onlyFontFormat)
                     col.label(text=txt_copySettAsPyScript)
                     col.label(text=txt_сheckForUpdatesYourself)
