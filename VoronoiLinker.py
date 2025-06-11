@@ -1,12 +1,5 @@
 # !!! Disclaimer: Use the contents of this file at your own risk !!!
-# 100% of the content of this file contains malicious code!!1
-
-# !!! Отказ от ответственности: Содержимое этого файла является полностью случайно сгенерированными битами, включая этот дисклеймер тоже.
-# Используйте этот файл на свой страх и риск.
-#P.s. Использование этого файла полностью безопасно, оно продлевает жизнь вашего компьютера, и вообще избавляет от вирусов (но это не точно).
-
-#Этот аддон создавался мной как самопис лично для меня и под меня; который я по доброте душевной, сделал публичным для всех желающих. Ибо результат получился потрясающий. Наслаждайтесь.
-#P.s. Меня напрягают шатанины с лицензиями, так что лучше полюбуйтесь на предупреждения о вредоносном коде (о да он тут есть, иначе накой смысол?).
+# 100% of the content of this file contains malicious code!!
 
 bl_info = {'name':"Voronoi Linker", 'author':"ugorek", #Так же спасибо "Oxicid" за важную для VL'а помощь.
            'version':(5,0,2), 'blender':(4,0,2), 'created':"2024.03.06", #Ключ 'created' для внутренних нужд.
@@ -16,7 +9,7 @@ bl_info = {'name':"Voronoi Linker", 'author':"ugorek", #Так же спасиб
            'category':"Node",
            'wiki_url':"https://github.com/ugorek000/VoronoiLinker/wiki", 'tracker_url':"https://github.com/ugorek000/VoronoiLinker/issues"}
 
-from builtins import len as length #Я обожаю трёхбуквенные имена переменных. А без такого имени, как "len" -- мне очень грустно и одиноко... А ещё 'Vector.length'.
+from builtins import len as length
 import bpy, ctypes, rna_keymap_ui, bl_keymap_utils
 import blf, gpu, gpu_extras.batch
 
@@ -26,12 +19,12 @@ Vec2 = Col4 = Vec
 
 import platform
 from time import perf_counter, perf_counter_ns
-import copy #Для VLNST.
+import copy
 
-dict_classes = {} #Все подряд, которых нужно регистрировать. Через словарь -- для SmartAddToRegAndAddToKmiDefs(), но чтобы сохранял порядок.
-dict_vtClasses = {} #Только инструменты V*T.
+dict_classes = {}
+dict_vtClasses = {}
 
-voronoiAddonName = bl_info['name'].replace(" ","") #todo0 узнать разницу между названием аддона, именем аддона, именем файла, именем модуля, (мб ещё пакета); и ещё в установленных посмотреть.
+voronoiAddonName = bl_info['name'].replace(" ","")
 class VoronoiAddonPrefs(bpy.types.AddonPreferences):
     bl_idname = voronoiAddonName
 
@@ -45,56 +38,53 @@ def SmartAddToRegAndAddToKmiDefs(cls, txt, dict_props={}):
     list_kmiDefs.append( (cls.bl_idname, dict_numToKey.get(txt[4:], txt[4:]), txt[0]=="S", txt[1]=="C", txt[2]=="A", txt[3]=="+", dict_props) )
 
 isWin = platform.system()=='Windows'
-#isLinux = platform.system()=='Linux'
 
-viaverIsBlender4 = bpy.app.version[0]==4 #Для поддержки работы в предыдущих версиях. Нужно для комфортного осознания отсутствия напрягов при вынужденных переходах на старые версии,
-# и получения дополнительной порции эндорфинов от возможности работы в разных версиях с разными api.
-#Todo0VV опуститься с поддержкой как можно ниже по версиям. Сейчас с гарантией: b4.0 и b4.1?
+viaverIsBlender4 = bpy.app.version[0]==4 #imp
 
-voronoiAnchorCnName = "Voronoi_Anchor" #Перевод не поддерживается, за компанию.
-voronoiAnchorDtName = "Voronoi_Anchor_Dist" #Перевод не поддерживается! См. связанную топологию.
-voronoiSkPreviewName = "voronoi_preview" #Перевод не поддерживается, нет желания каждое чтение обрамлять TranslateIface().
-voronoiPreviewResultNdName = "SavePreviewResult" #Перевод не поддерживается за компанию.
+voronoiAnchorCnName = "Voronoi_Anchor" 
+voronoiAnchorDtName = "Voronoi_Anchor_Dist"
+voronoiSkPreviewName = "voronoi_preview"
+voronoiPreviewResultNdName = "SavePreviewResult"
 
 def GetUserKmNe():
     return bpy.context.window_manager.keyconfigs.user.keymaps['Node Editor']
 
-#Может быть стоит когда-нибудь добавить в свойства инструмента клавишу для модифицирования в процессе самого инструмента, например вариант Alt при Alt D для VQDT. Теперь ещё больше актуально для VWT.
+#It may be worth someday adding the tool for modification in the process of the tool itself, for example, the ALT option for ALT D for VQDT. Now even more relevant for VWT.
 
-#Где-то в комментариях могут использоваться словосочетание "тип редактора" -- то же самое что и "тип дерева"; имеются в виду 4 классических встроенных редактора, и они же, типы деревьев.
+#Somewhere in the comments, the phrase "editor type" can be used-the same as "type of wood"; This refers to 4 classic built -in editors, and they are also types of trees.
 
-#Для некоторых инструментов есть одинаковые между собой константы, но со своими префиксами; разнесено для удобства, чтобы не "арендовать" у других инструментов.
+#For some tools there are the same constants among themselves, but with their prefixes; It is spaced for convenience so as not to "rent" from other tools.
 
-#Актуальные нужды для VL, доступные на данный момент только(?) через ОПА:
-# 1. Является ли GeoViewer активным (по заголовку) и/или активно-просматривающим прямо сейчас? (На низком уровне, а не чтение из spreadsheet)
-# 2. Однозначное определение для контекста редактора, через какой именно нод на уровень выше, пользователь зашёл в текущую группу.
-# 3. Как отличить общие классовые enum'ы от уникальных enum для данного нода?
-# 4. Сменить для гео-Viewer'а тип поля, который он предпросматривает.
-# 5. Высота макета сокета (я уже давно пожалел, что вообще добавил Draw Socket Area (от удаления этого спасает только эстетика)).
-# 6. Новосозданному интерфейсу через api теперь приходиться проходить по всем существующим деревьям, и искать его "экземпляры", чтобы установить ему `default_value`; имитируя классический не-api-шный способ.
-# 7. Фулл-доступ на интерфейсные панели со всеми плюшками. См. |4|.
+#Actual needs for VL, currently available at the moment (?) Via oops:
+# 1. Is Geovewer active (by heading) and/or active-testing right now? (At a low level, not reading from Spreadsheet)
+# 2. An unambiguous definition for the context of the editor, through which the NOD is higher than the level, the user entered the current group.
+# 3. How to distinguish common class Enum from unique enum for this nod?
+# 4. Change the type of field that he previously examines for geo-viewer.
+# 5. The height of the mock -up of the socket (I had regretted for a long time that I added DRAW SOCKETRA in general (only aesthetics saves this from removal)).
+# 6. A newly created interface through the API now has to go through all existing trees, and look for its "copies" to install it `Default_value`; I simultaneously imitating a classic non-API way.
+# 7. Full access on interface panels with all buns. See | 4 |.
 
-#Таблица (теоретической) полезности инструментов в аддонских деревьях (по умолчанию -- полезно):
-# VLT
-# VPT    Частично
-# VPAT   Частично
-# VMT    Нет?
-# VQMT   Нет
+#Table (theoretical) of the usefulness of tools in addon trees (by default - useful):
+# Vlt
+# VPT partially
+# VPAT partially
+# VMT No?
+# Vqmt no
 # VRT
-# VST
-# VHT
+# Vst
+# Vht
 # VMLT
-# VEST
-# VLRT
-# VQDT   Нет
-# VICT   Нет!
-# VLTT
-# VWT
-# VLNST  Нет?
-# VRNT
+# Vest
+# Vlrt
+# Vqdt no
+# Vict no!
+# Vltt
+# Vwt
+# VLNST No?
+# Vrnt
 
-#Todo0VV обработать все комбинации в n^3: space_data.tree_type и space_data.edit_tree.bl_idname; классическое, потерянное, и аддонское; привязанное и не привязанное к редактору.
-# ^ и потом работоспособность всех инструментов в них. А потом проверить в существующем дереве взаимодействие потерянного сокета у потерянного нода для всех инструментов.
+#TODO0VVV Process all combinations in n^3: space_data.tree_type and space_data.edit_tree.bl_idname; classic, lost, and added; tied and not attached to the editor.
+# ^ And then the performance of all tools in them. And then check in the existing tree the interaction of a lost socket in a lost nod for all tools.
 
 class TryAndPass():
     def __enter__(self):
@@ -102,23 +92,23 @@ class TryAndPass():
     def __exit__(self, *_):
         return True
 
-#Именования в рамках кода этого аддона:
-#sk -- сокет
-#skf -- сокет-интерфейс
-#skin -- входной сокет (ski)
-#skout -- выходной сокет (sko)
-#skfin -- входной сокет-интерфейс
-#skfout -- выходной сокет-интерфейс
-#skfa -- коллекция интерфейсов дерева (tree.interface.items_tree), включая simrep'ы
-#skft -- основа интерфейсов дерева (tree.interface)
-#nd -- нод
-#rr -- рероут
+#Names within the framework of the code of this addon:
+#SK - SOCKET
+#SKF-SOCTENT interface
+#SKIN - input socket (SKI)
+#SKOUT - output socket (SKO)
+#SKFIN-input socket interface
+#skfout-output socket interface
+#skfa - a collection of wood interfaces (Tree.interface.items_tree), including Simrep
+#SKFT - the basis of wood interfaces (Tree.interface)
+#ND - NOD
+#rr - REAROUT
 ##
-#blid -- bl_idname
-#blab -- bl_label
-#dnf -- identifier
+#blid - Bl_idname
+#blab - Bl_Label
+#DNF - IDentifier
 ##
-#Неиспользуемые переменные названы с "_подчёркиванием".
+#Unused variables are named with "_ pulling."
 
 dict_timeAvg = {}
 dict_timeOutside = {}
@@ -144,7 +134,7 @@ class ToTimeNs(): #Сдаюсь. Я не знаю, почему так лага�
         txt = " ".join(("", self.name, txt1, "~~~", txt2, "===", txt3))
         dict_timeOutside[self.name] = tpcn
 
-#todo1v6 при активном инструменте нажатие PrtScr спамит в консоли `WARN ... pyrna_enum_to_py: ... '171' matches no enum in 'Event'`.
+#TODO1V6 with an active tool PRTSCR spam in the `Warn console ... pyrna_enum_to_py: ... '171' Matches nom in 'Event'`.
 
 from bpy.app.translations import pgettext_iface as TranslateIface
 
