@@ -39,7 +39,7 @@ def SmartAddToRegAndAddToKmiDefs(cls, txt, dict_props={}):
 
 isWin = platform.system()=='Windows'
 
-viaverIsBlender4 = bpy.app.version[0]==4 #imp
+viaverIsBlender4 = bpy.app.version[0]>=4 #imp
 
 voronoiAnchorCnName = "Voronoi_Anchor" 
 voronoiAnchorDtName = "Voronoi_Anchor_Dist"
