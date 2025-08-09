@@ -1814,7 +1814,7 @@ class VoronoiLinkerTool(VoronoiToolPairSk): #Святая святых. То р�
         LyAddLeftProp(col, prefs,'vltPriorityIgnoring')
         LyAddLeftProp(col, prefs,'vltSelectingInvolved')
 
-SmartAddToRegAndAddToKmiDefs(VoronoiLinkerTool, "###_RIGHTMOUSE") #"##A_RIGHTMOUSE"?
+SmartAddToRegAndAddToKmiDefs(VoronoiLinkerTool, "##A_RIGHTMOUSE") #shortcut for voronoi-linker function.
 dict_setKmiCats['grt'].add(VoronoiLinkerTool.bl_idname)
 
 fitVltPiDescr = "High-level ignoring of \"annoying\" sockets during first search. (Currently, only the \"Alpha\" socket of the image nodes)"
