@@ -1690,6 +1690,141 @@ def GetNearestSocketsFtg(nd, samplePos, uiScale): #Выдаёт список "б
     list_ftgSksOut.sort(key=lambda a:a.dist)
     return list_ftgSksIn, list_ftgSksOut
 
+#На самых истоках весь аддон создавался только ради этого инструмента. А то-то вы думаете названия одинаковые.
+#Но потом я подахренел от обузданных возможностей, и меня понесло... понесло на создание мейнстримной троицы. Но этого оказалось мало, и теперь инструментов больше чем 7. Чума!
+#Дублирующие комментарии есть только здесь (и в целом по убыванию). При спорных ситуациях обращаться к VLT для подражания, как к истине в последней инстанции.
+class VoronoiLinkerTool(VoronoiToolPairSk): #Святая святых. То ради чего. Самый первый. Босс всех инструментов. Во славу великому полю расстояния!
+    bl_idname = 'node.voronoi_linker'
+    bl_label = "Voronoi Linker"
+    usefulnessForCustomTree = True
+    usefulnessForUndefTree = True
+    def CallbackDrawTool(self, drata):
+        TemplateDrawSksToolHh(drata, self.fotagoSkOut, self.fotagoSkIn, sideMarkHh=-1, isClassicFlow=True)
+    @staticmethod
+    def SkPriorityIgnoreCheck(sk): #False -- игнорировать.
+        #Эта функция была добавлена по запросам извне (как и VLNST).
+        set_ndBlidsWithAlphaSk = {'ShaderNodeTexImage', 'GeometryNodeImageTexture', 'CompositorNodeImage', 'ShaderNodeValToRGB', 'CompositorNodeValToRGB'}
+        if sk.node.bl_idname in set_ndBlidsWithAlphaSk:
+            return sk.name!="Alpha" #sk!=sk.node.outputs[1]
+        return True
+    def NextAssignmentTool(self, isFirstActivation, prefs, tree): #Todo0NA ToolAssignmentFirst, Next, /^Root/; несколько NA(), нод сокет на первый, нод сокет на второй.
+        #В случае не найденного подходящего предыдущий выбор остаётся, отчего не получится вернуть курсор обратно и "отменить" выбор, что очень неудобно.
+        self.fotagoSkIn = None #Поэтому обнуляется каждый раз перед поиском.
+        for ftgNd in self.ToolGetNearestNodes():
+            nd = ftgNd.tar
+            list_ftgSksIn, list_ftgSksOut = self.ToolGetNearestSockets(nd)
+            if isFirstActivation:
+                for ftg in list_ftgSksOut:
+                    if (self.isFirstCling)or(ftg.blid!='NodeSocketVirtual')and( (not prefs.vltPriorityIgnoring)or(self.SkPriorityIgnoreCheck(ftg.tar)) ):
+                        self.fotagoSkOut = ftg
+                        break
+            self.isFirstCling = True
+            #Получить вход по условиям:
+            skOut = FtgGetTargetOrNone(self.fotagoSkOut)
+            if skOut: #Первый заход всегда isFirstActivation==True, однако нод может не иметь выходов.
+                #Заметка: Нод сокета активации инструмента (isFirstActivation==True) в любом случае нужно разворачивать.
+                #Свёрнутость для рероутов работает, хоть и не отображается визуально; но теперь нет нужды обрабатывать, ибо поддержка свёрнутости введена.
+                CheckUncollapseNodeAndReNext(nd, self, cond=isFirstActivation, flag=True)
+                #На этом этапе условия для отрицания просто найдут другой результат. "Прицепится не к этому, так к другому".
+                for ftg in list_ftgSksIn:
+                    #Заметка: Оператор `|=` всё равно заставляет вычисляться правый операнд.
+                    skIn = ftg.tar
+                    #Для разрешённой-группы-между-собой разрешить "переходы". Рероутом для удобства можно в любой сокет с обеих сторон, минуя различные типы
+                    tgl = self.SkBetweenFieldsCheck(skIn, skOut)or( (skOut.node.type=='REROUTE')or(skIn.node.type=='REROUTE') )and(prefs.vltReroutesCanInAnyType)
+                    #Работа с интерфейсами переехала в VIT, теперь только между виртуальными
+                    tgl = (tgl)or( (skIn.bl_idname=='NodeSocketVirtual')and(skOut.bl_idname=='NodeSocketVirtual') )
+                    #Если имена типов одинаковые
+                    tgl = (tgl)or(skIn.bl_idname==skOut.bl_idname) #Заметка: Включая аддонские сокеты.
+                    #Если аддонские сокеты в классических деревьях -- можно и ко всем классическим, классическим можно ко всем аддонским
+                    tgl = (tgl)or(self.isInvokeInClassicTree)and(IsClassicSk(skOut)^IsClassicSk(skIn))
+                    #Заметка: SkBetweenFieldsCheck() проверяет только меж полями, поэтому явная проверка одинаковости `bl_idname`.
+                    if tgl:
+                        self.fotagoSkIn = ftg
+                        break #Обработать нужно только первый ближайший, удовлетворяющий условиям. Иначе результатом будет самый дальний.
+                #На этом этапе условия для отрицания сделают результат никаким. Типа "Ничего не нашлось"; и будет обрабатываться соответствующим рисованием.
+                if self.fotagoSkIn:
+                    if self.fotagoSkOut.tar.node==self.fotagoSkIn.tar.node: #Если для выхода ближайший вход -- его же нод
+                        self.fotagoSkIn = None
+                    elif self.fotagoSkOut.tar.vl_sold_is_final_linked_cou: #Если выход уже куда-то подсоединён, даже если это выключенные линки (но из-за пайки их там нет).
+                        for lk in self.fotagoSkOut.tar.vl_sold_links_final:
+                            if lk.to_socket==self.fotagoSkIn.tar: #Если ближайший вход -- один из подсоединений выхода, то обнулить => "желаемое" соединение уже имеется.
+                                self.fotagoSkIn = None
+                                #Используемый в проверке выше "self.fotagoSkIn" обнуляется, поэтому нужно выходить, иначе будет попытка чтения из несуществующего элемента следующей итерацией.
+                                break
+                    CheckUncollapseNodeAndReNext(nd, self, cond=self.fotagoSkIn, flag=False) #"Мейнстримная" обработка свёрнутости.
+            break #Обработать нужно только первый ближайший, удовлетворяющий условиям. Иначе результатом будет самый дальний.
+    def ModalMouseNext(self, event, prefs):
+        if event.type==prefs.vltRepickKey:
+            self.repickState = event.value=='PRESS'
+            if self.repickState: #Дублирование от ниже. Не знаю как придумать это за один заход.
+                self.NextAssignmentRoot(True)
+        else:
+            match event.type:
+                case 'MOUSEMOVE':
+                    if self.repickState: #Заметка: Требует существования, забота вызывающей стороны.
+                        self.NextAssignmentRoot(True)
+                    else:
+                        self.NextAssignmentRoot(False)
+                case self.kmi.type|'ESC':
+                    if event.value=='RELEASE':
+                        return True
+        return False
+    def MatterPurposePoll(self):
+        return self.fotagoSkOut and self.fotagoSkIn
+    def MatterPurposeTool(self, event, prefs, tree):
+        sko = self.fotagoSkOut.tar
+        ski = self.fotagoSkIn.tar
+        ##
+        tree.links.new(sko, ski) #Самая важная строчка снова стала низкоуровневой.
+        ##
+        if ski.is_multi_input: #Если мультиинпут, то реализовать адекватный порядок подключения.
+            #Моя личная хотелка, которая чинит странное поведение, и делает его логически-корректно-ожидаемым. Накой смысол последние соединённые через api лепятся в начало?
+            list_skLinks = []
+            for lk in ski.vl_sold_links_final:
+                #Запомнить все имеющиеся линки по сокетам, и удалить их:
+                list_skLinks.append((lk.from_socket, lk.to_socket, lk.is_muted))
+                tree.links.remove(lk)
+            #До версии b3.5 обработка ниже нужна была, чтобы новый io группы дважды не создавался.
+            #Теперь без этой обработки Блендер или крашнется, или линк из виртуального в мультиинпут будет невалидным
+            if sko.bl_idname=='NodeSocketVirtual':
+                sko = sko.node.outputs[-2]
+            tree.links.new(sko, ski) #Соединить очередной первым.
+            for li in list_skLinks: #Восстановить запомненные. #todo0VV для поддержки старых версий: раньше было [:-1], потому что последний в списке уже являлся желанным, что был соединён строчкой выше.
+                tree.links.new(li[0], li[1]).is_muted = li[2]
+        VlrtRememberLastSockets(sko, ski) #Запомнить сокеты для VLRT, которые теперь являются "последними использованными".
+        if prefs.vltSelectingInvolved:
+            for nd in tree.nodes:
+                nd.select = False
+            sko.node.select = True
+            ski.node.select = True
+            tree.nodes.active = sko.node #P.s. не знаю, почему именно он; можно было и от ski. А делать из этого опцию как-то так себе.
+    def InitTool(self, event, prefs, tree):
+        self.fotagoSkOut = None
+        self.fotagoSkIn = None
+        self.repickState = False
+        self.isFirstCling = False #Для SkPriorityIgnoreCheck и перевобора на виртуальные.
+        if prefs.vltDeselectAllNodes:
+            bpy.ops.node.select_all(action='DESELECT')
+            tree.nodes.active = None
+    @staticmethod
+    def LyDrawInAddonDiscl(col, prefs):
+        LyAddKeyTxtProp(col, prefs,'vltRepickKey')
+        LyAddLeftProp(col, prefs,'vltReroutesCanInAnyType')
+        LyAddLeftProp(col, prefs,'vltDeselectAllNodes')
+        LyAddLeftProp(col, prefs,'vltPriorityIgnoring')
+        LyAddLeftProp(col, prefs,'vltSelectingInvolved')
+
+SmartAddToRegAndAddToKmiDefs(VoronoiLinkerTool, "###_RIGHTMOUSE") #"##A_RIGHTMOUSE"?
+dict_setKmiCats['grt'].add(VoronoiLinkerTool.bl_idname)
+
+fitVltPiDescr = "High-level ignoring of \"annoying\" sockets during first search. (Currently, only the \"Alpha\" socket of the image nodes)"
+class VoronoiAddonPrefs(VoronoiAddonPrefs):
+    vltRepickKey: bpy.props.StringProperty(name="Repick Key", default='LEFT_ALT')
+    vltReroutesCanInAnyType: bpy.props.BoolProperty(name="Reroutes can be connected to any type", default=True)
+    vltDeselectAllNodes:     bpy.props.BoolProperty(name="Deselect all nodes on activate",        default=False)
+    vltPriorityIgnoring:     bpy.props.BoolProperty(name="Priority ignoring",                     default=False, description=fitVltPiDescr)
+    vltSelectingInvolved:    bpy.props.BoolProperty(name="Selecting involved nodes",              default=False)
+
 #Fast mathematics.
 #Get a GCD with the desired operation and automatic connection to the sockets, thanks to the power of VL'A.
 #Unexpectedly for me it turned out that the pie could draw a regular layout. From which I added an additional type of pie "for control".
@@ -1705,119 +1840,6 @@ def GetNearestSocketsFtg(nd, samplePos, uiScale): #Выдаёт список "б
 #"Compatible ..." - so that the vectors and mathematics have the same operations in the same places (except trigonometric).
 #With the exception of primitives, where super obvious logic is traced (right - plus - add, left - minus - sub; everything is on the numerical axis), left and bottom are simpler than the back side.
 #For example, Length is easier than Distance. All the rest are not obvious and not oriented as it turned out.
-
-fitVstModeItems = ( ('SWAP', "Swap",     "All links from the first socket will be on the second, from the second on the first"),
-                    ('ADD',  "Add",      "Add all links from the second socket to the first one"),
-                    ('TRAN', "Transfer", "Move all links from the second socket to the first one with replacement") )
-class VoronoiSwapperTool(VoronoiToolPairSk):
-    bl_idname = 'node.voronoi_swaper'
-    bl_label = "Voronoi Swapper"
-    usefulnessForCustomTree = True
-    canDrawInAddonDiscl = False
-    toolMode:     bpy.props.EnumProperty(name="Mode", default='SWAP', items=fitVstModeItems)
-    isCanAnyType: bpy.props.BoolProperty(name="Can swap with any socket type", default=False)
-    def NextAssignmentTool(self, isFirstActivation, prefs, tree):
-        if isFirstActivation:
-            self.fotagoSk0 = None
-        self.fotagoSk1 = None
-        for ftgNd in self.ToolGetNearestNodes():
-            nd = ftgNd.tar
-            CheckUncollapseNodeAndReNext(nd, self, cond=isFirstActivation, flag=True)
-            list_ftgSksIn, list_ftgSksOut = self.ToolGetNearestSockets(nd)
-            #За основу были взяты критерии от Миксера.
-            if isFirstActivation:
-                ftgSkOut, ftgSkIn = None, None
-                for ftg in list_ftgSksOut: #todo0NA да это же Findanysk!?
-                    if ftg.blid!='NodeSocketVirtual':
-                        ftgSkOut = ftg
-                        break
-                for ftg in list_ftgSksIn:
-                    if ftg.blid!='NodeSocketVirtual':
-                        ftgSkIn = ftg
-                        break
-                #Разрешить возможность "добавлять" и для входов тоже, но только для мультиинпутов, ибо очевидное
-                if (self.toolMode=='ADD')and(ftgSkIn):
-                    #Проверка по типу, но не по 'is_multi_input', чтобы из обычного в мультиинпут можно было добавлять.
-                    if (ftgSkIn.blid not in ('NodeSocketGeometry','NodeSocketString')):#or(not ftgSkIn.tar.is_multi_input): #Без второго условия больше возможностей.
-                        ftgSkIn = None
-                self.fotagoSk0 = MinFromFtgs(ftgSkOut, ftgSkIn)
-            #Здесь вокруг аккумулировалось много странных проверок с None и т.п. -- результат соединения вместе многих типа высокоуровневых функций, что я понаизобретал.
-            skOut0 = FtgGetTargetOrNone(self.fotagoSk0)
-            if skOut0:
-                for ftg in list_ftgSksOut if skOut0.is_output else list_ftgSksIn:
-                    if ftg.blid=='NodeSocketVirtual':
-                        continue
-                    if (self.isCanAnyType)or(skOut0.bl_idname==ftg.blid)or(self.SkBetweenFieldsCheck(skOut0, ftg.tar)):
-                        self.fotagoSk1 = ftg
-                    if self.fotagoSk1: #В случае успеха прекращать поиск.
-                        break
-                if (self.fotagoSk1)and(skOut0==self.fotagoSk1.tar): #Проверка на самокопию.
-                    self.fotagoSk1 = None
-                    break #Ломать для isCanAnyType, когда isFirstActivation==False и сокет оказался самокопией; чтобы не находил сразу два нода.
-                if not self.isCanAnyType:
-                    if not(self.fotagoSk1 or isFirstActivation): #Если нет результата, продолжаем искать.
-                        continue
-                CheckUncollapseNodeAndReNext(nd, self, cond=self.fotagoSk1, flag=False)
-            break
-    def MatterPurposePoll(self):
-        return self.fotagoSk0 and self.fotagoSk1
-    def MatterPurposeTool(self, event, prefs, tree):
-        skIo0 = self.fotagoSk0.tar
-        skIo1 = self.fotagoSk1.tar
-        match self.toolMode:
-            case 'SWAP':
-                #Поменять местами все соединения у первого и второго сокета:
-                list_memSks = []
-                if skIo0.is_output: #Проверка одинаковости is_output -- забота для NextAssignmentTool().
-                    for lk in skIo0.vl_sold_links_final:
-                        if lk.to_node!=skIo1.node: # T 1  Чтобы линк от нода не создался сам в себя. Проверять нужно у всех и таковые не обрабатывать.
-                            list_memSks.append(lk.to_socket)
-                            tree.links.remove(lk)
-                    for lk in skIo1.vl_sold_links_final:
-                        if lk.to_node!=skIo0.node: # T 0  ^
-                            tree.links.new(skIo0, lk.to_socket)
-                            if lk.to_socket.is_multi_input: #Для мультиинпутов удалить.
-                                tree.links.remove(lk)
-                    for li in list_memSks:
-                        tree.links.new(skIo1, li)
-                else:
-                    for lk in skIo0.vl_sold_links_final:
-                        if lk.from_node!=skIo1.node: # F 1  ^
-                            list_memSks.append(lk.from_socket)
-                            tree.links.remove(lk)
-                    for lk in skIo1.vl_sold_links_final:
-                        if lk.from_node!=skIo0.node: # F 0  ^
-                            tree.links.new(lk.from_socket, skIo0)
-                            tree.links.remove(lk)
-                    for li in list_memSks:
-                        tree.links.new(li, skIo1)
-            case 'ADD'|'TRAN':
-                #Просто добавить линки с первого сокета на второй. Aka объединение, добавление.
-                if self.toolMode=='TRAN':
-                    #Тоже самое, как и добавление, только с потерей связей у первого сокета.
-                    for lk in skIo1.vl_sold_links_final:
-                        tree.links.remove(lk)
-                if skIo0.is_output:
-                    for lk in skIo0.vl_sold_links_final:
-                        if lk.to_node!=skIo1.node: # T 1  ^
-                            tree.links.new(skIo1, lk.to_socket)
-                            if lk.to_socket.is_multi_input: #Без этого lk всё равно указывает на "добавленный" линк, от чего удаляется. Поэтому явная проверка для мультиинпутов.
-                                tree.links.remove(lk)
-                else: #Добавлено ради мультиинпутов.
-                    for lk in skIo0.vl_sold_links_final:
-                        if lk.from_node!=skIo1.node: # F 1  ^
-                            tree.links.new(lk.from_socket, skIo1)
-                            tree.links.remove(lk)
-        #VST VLRT же без нужды, да ведь?
-
-SmartAddToRegAndAddToKmiDefs(VoronoiSwapperTool, "S##_S", {'toolMode':'SWAP'})
-SmartAddToRegAndAddToKmiDefs(VoronoiSwapperTool, "##A_S", {'toolMode':'ADD'})
-SmartAddToRegAndAddToKmiDefs(VoronoiSwapperTool, "#CA_S", {'toolMode':'TRAN'})
-dict_setKmiCats['oth'].add(VoronoiSwapperTool.bl_idname)
-
-dict_toolLangSpecifDataPool[VoronoiSwapperTool, ru_RU] = """Инструмент для обмена линков у двух сокетов, или добавления их к одному из них.
-Для линка обмена не будет, если в итоге он окажется исходящим из своего же нода."""
-dict_toolLangSpecifDataPool[VoronoiSwapperTool, zh_CN] = "Alt是批量替换输出端口,Shift是互换端口"
 
 #Нужен только для наведения порядка и эстетики в дереве.
 #Для тех, кого (например меня) напрягают "торчащие без дела" пустые сокеты выхода, или нулевые (чьё значение 0.0, чёрный, и т.п.) незадействованные сокеты входа.
