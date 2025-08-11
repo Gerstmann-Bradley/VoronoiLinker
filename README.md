@@ -1,39 +1,17 @@
-https://github.com/ugorek000/VoronoiLinker/assets/120259754/19900e6a-8263-4b02-835e-18a6703b34c6
+The `Main` branch is a simplified version of the original repository.
+It only retains two major functions as `lazy connect` and `hide socket`, as shown in the demo video below.
+This is done to simplify the original add-on code from 6,000 lines, as well as to reduce the risk of shortcut conflicts with Blender functions or other add-ons, lower the learning curve, and make function management and documentation easier.
 
-# VoronoiLinker
-Blender Addon for Node Editor which adds ~three~ nine (16) new awesome tools:
-* Voronoi Linker
-* Voronoi Preview
-* Voronoi Mixer
-* Voronoi Quick Math
-* Voronoi [RANTO](https://github.com/ugorek000/RANTO)
-* Voronoi Swapper
-* Voronoi Hider
-* Voronoi MassLinker
-* Voronoi Enum Selector
-* Voronoi Link Repeating
-* Voronoi Quick Dimensions
-* Voronoi Interfacer
-* Voronoi Links Transfer
-* Voronoi Warper
-* Voronoi Lazy Node Stencils
-* Voronoi Reset Node
+The branch `Original-Fixed-for-5.0Blender` is essentially the same as the original repository, with a single-line fix to make the add-on compatible with Blender 5.0.
 
-Disclaimer: Скрипт аддона предоставляется как есть. Воспринимайте это, как археологическую находку, ни с чем не связанную. Поэтому перед использованием обязательно ознакомьтесь с содержимым того, что будете себе устанавливать. Ибо вы используете этот файл на свой страх и риск.
+Note: The add-on uses a `ctypes` hack to access socket locations for its functions. Because of this, it has been flagged as “Dangerous Malicious Code” by the original author.
+Please use it at your own risk.
 
-See wiki for details https://github.com/ugorek000/VoronoiLinker/wiki
+(In Blender add-ons, ctypes can reach parts of Blender’s memory that the normal Python API can’t.
+This is powerful, but risky because:
+1. Reading or writing the wrong memory can crash Blender.
+2. It skips safety checks, so it may be flagged as unsafe or malicious.)
 
-----------------------
-First appearance of the addon: 2022.12.10 [[8f80e9f](https://github.com/ugorek000/VoronoiLinker/commit/8f80e9f687b5de0aff86edfae0e5e50abfc85920)]  
-Full refactoring v2.0.0 done: 2023.04.22 [[bf328ac](https://github.com/ugorek000/VoronoiLinker/commit/bf328ac72d817ad16d92566403c45f8a19cf5251)]  
-Complete refactoring v3.0.0 done: 2023.09.09 [[ba8483e](https://github.com/ugorek000/VoronoiLinker/commit/ba8483e33abe948e6453f6e6f4d286dad2d394fb)]  
-Many new features v4.0.0 update: 2023.12.10 [[6401515](https://github.com/ugorek000/VoronoiLinker/commit/64015156738b38a4318dc230143cb5e72bfad88b)]  
-Major serious v5.0.0 update: 2024.02.26 [[d7a34f3](https://github.com/ugorek000/VoronoiLinker/commit/d7a34f3747137e843399b1e3f52928f2b9798251)]  
-**Latest version 5.0.2 created: 2024.03.06**
 
-![](https://github.com/ugorek000/VoronoiLinker/assets/120259754/3dc18017-feb4-49ce-a5fa-2062c5b49d9f)
+https://github.com/user-attachments/assets/388e89d0-6c04-47e4-b31f-3d9c94f3de2f
 
-----------------------
-Reach to autor (Russia):  
-coaltangle@gmail.com  
-Discord: ugorek#6434
